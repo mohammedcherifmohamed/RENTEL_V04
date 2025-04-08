@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="bp" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #020725;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
+   <left>
+      <VBox alignment="TOP_CENTER" minHeight="-Infinity" prefHeight="700.0" prefWidth="206.0" spacing="30.0" style="-fx-background-color: #1E1E2F; -fx-background-radius: 10;" BorderPane.alignment="BOTTOM_CENTER">
+         <children>
+            <Label minHeight="0.0" prefHeight="49.0" prefWidth="183.0" text="Vehiculs Rentals" textFill="#4a61ff" wrapText="true">
+               <font>
+                  <Font name="Constantia Bold Italic" size="17.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../pics/car-rental%20(1).png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
+            <Button fx:id="dashboard" alignment="BOTTOM_LEFT" cache="true" minHeight="0.0" mnemonicParsing="false" onAction="#go_dashboard" onMouseClicked="#home" prefHeight="52.0" prefWidth="190.0" style="-fx-background-color: #1E1E2F;" styleClass="transparent-button" text="Dashboard" textFill="#4a61ff">
+               <font>
+                  <Font name="Constantia Bold Italic" size="23.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../pics/monitor.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="vehicles" alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="10.0" minHeight="0.0" mnemonicParsing="false" onAction="#go_vehicles" onMouseClicked="#page1" prefHeight="52.0" prefWidth="177.0" style="-fx-background-color: #1E1E2F;" styleClass="transparent-button" text="Vehicls " textFill="#4a61ff">
+               <font>
+                  <Font name="Constantia Bold Italic" size="25.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../pics/fleet.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="Clients" alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="62.0" minHeight="0.0" mnemonicParsing="false" onAction="#go_clients" onMouseClicked="#page2" prefHeight="52.0" prefWidth="176.0" style="-fx-background-color: #1E1E2F;" styleClass="transparent-button" text="Clients" textFill="#4a61ff">
+               <font>
+                  <Font name="Constantia Bold Italic" size="25.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../pics/handshake.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="reports" alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="114.0" minHeight="0.0" mnemonicParsing="false" onAction="#go_reports" onMouseClicked="#page3" prefHeight="52.0" prefWidth="172.0" style="-fx-background-color: #1E1E2F;" styleClass="transparent-button" text="Reports" textFill="#4a61ff">
+               <font>
+                  <Font name="Constantia Bold Italic" size="25.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../pics/service.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Pane prefHeight="254.0" prefWidth="206.0">
+               <children>
+                  <HBox layoutX="3.0" layoutY="187.0" prefHeight="53.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="logout" mnemonicParsing="false" onAction="#lougout" prefHeight="51.0" prefWidth="200.0" text="Logout" textFill="RED">
+                           <font>
+                              <Font name="Arial Bold" size="22.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="3.0" layoutY="90.0" prefHeight="74.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="59.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../1177568.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="user_label" alignment="CENTER" prefHeight="40.0" prefWidth="156.0" text="User Name" textFill="#f80000" wrapText="true">
+                           <font>
+                              <Font name="Arial Bold Italic" size="22.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Separator layoutX="3.0" layoutY="13.0" prefWidth="200.0" />
+                  <Separator layoutX="3.0" layoutY="173.0" prefWidth="200.0" />
+                  <HBox layoutX="3.0" layoutY="30.0" prefHeight="60.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="notification_icon" fitHeight="42.0" fitWidth="41.0" onMouseClicked="#see_notification" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../notification.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="notification_label" prefHeight="23.0" prefWidth="36.0" text="+99" textFill="RED">
+                           <font>
+                              <Font name="Arial Black" size="17.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </Pane>
+         </children>
+         <padding>
+            <Insets top="40.0" />
+         </padding>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </VBox>
+   </left>
+   
+   <center>
+      <VBox fx:id="display_content" alignment="TOP_CENTER" prefHeight="430.0" prefWidth="806.0" BorderPane.alignment="TOP_CENTER">
+         <children>
+            <GridPane alignment="CENTER" prefHeight="699.0" prefWidth="806.0" vgap="50.0" VBox.vgrow="ALWAYS">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="20.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="500.0" minWidth="100.0" prefWidth="200.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="500.0" minWidth="100.0" prefWidth="200.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="20.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="-Infinity" minHeight="20.0" prefHeight="50.0" valignment="BOTTOM" vgrow="NEVER" />
+                <RowConstraints minHeight="170.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="170.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <VBox alignment="CENTER" maxWidth="480.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="230.0" prefWidth="300.0" style="-fx-background-radius: 40;" styleClass="main_cards" stylesheets="@style.css" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="70.0" prefWidth="301.0" text="Total Clients" textFill="#030000">
+                           <font>
+                              <Font name="Arial Bold" size="38.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <ImageView fitHeight="97.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../pics/handshake.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="lblTotalClients" alignment="CENTER" prefHeight="20.0" prefWidth="73.0" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" maxWidth="480.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="230.0" prefWidth="300.0" style="-fx-background-radius: 40;" styleClass="main_cards" stylesheets="@style.css" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="70.0" prefWidth="302.0" text="Total Vehicls" textFill="#030000">
+                           <font>
+                              <Font name="Arial Bold" size="38.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <ImageView fitHeight="109.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../pics/fleet.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="lblTotalVehicles" alignment="CENTER" prefHeight="20.0" prefWidth="73.0" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" maxWidth="480.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="230.0" prefWidth="300.0" style="-fx-background-radius: 40;" styleClass="main_cards" stylesheets="@style.css" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="67.0" prefWidth="294.0" text="Total Income" textFill="#030000">
+                           <font>
+                              <Font name="Arial Bold" size="38.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <ImageView fitHeight="109.0" fitWidth="104.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../pics/salary.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="lblTotalIncome" alignment="CENTER" prefHeight="90.0" prefWidth="100.0" text="0.0" textFill="WHITE">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Label>
+                              <Label prefHeight="80.0" prefWidth="30.0" text="\$" textFill="WHITE">
+                                 <font>
+                                    <Font size="38.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" maxWidth="480.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="230.0" prefWidth="300.0" style="-fx-background-radius: 40;" styleClass="main_cards" stylesheets="@style.css" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="71.0" prefWidth="291.0" text="Total Rentals" textFill="#030000">
+                           <font>
+                              <Font name="Arial Bold" size="38.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <ImageView fitHeight="115.0" fitWidth="134.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../pics/deal.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="lblTotalRentals" alignment="CENTER" prefHeight="90.0" prefWidth="100.0" text="0" textFill="WHITE">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Label contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="79.0" prefWidth="251.0" style="-fx-background-radius: 10;" text="General View" textFill="#4a61ff" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Constantia Bold Italic" size="39.0" />
+                     </font>
+                     <effect>
+                        <DropShadow offsetX="5.0" offsetY="5.0" />
+                     </effect>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </padding>
+            </GridPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

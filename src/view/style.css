@@ -1,0 +1,36 @@
+
+
+.rightbox{
+    -fx-border-width:2px ;
+    /* -fx-border-style:solid ; */
+    /* -fx-border-color: red; */
+    -fx-border-radius: 20;
+}
+.main_rightbox{
+    -fx-background-color:linear-gradient(to right , #305ceb,#01003b);
+}
+.main_cards{
+-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #5ec5df, #00d8b4);
+}
+.inputs{
+    -fx-text-fill:#ffffff;
+    -fx-border-width:0 0 3px 0 ;
+    -fx-border-style:solid ;
+    -fx-border-color: rgb(29, 29, 29);
+    -fx-background-color:rgba(255, 255, 255, 0);
+    -fx-padding:10;
+
+
+}
+
+.buttons{
+    -fx-text-fill:#50fd00;
+    -fx-border-width:1.5px ;
+    -fx-border-style:solid ;
+    -fx-border-color: rgb(255, 255, 255);
+    -fx-background-color:rgba(255, 255, 255, 0);
+    -fx-padding:7 25;
+    -fx-border-radius: 10px;
+
+
+}
