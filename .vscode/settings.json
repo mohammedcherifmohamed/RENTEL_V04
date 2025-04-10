@@ -11,6 +11,9 @@
         "c:\\openjfx-23.0.2_windows-x64_bin-sdk\\javafx-sdk-23.0.2\\lib\\javafx.swing.jar",
         "c:\\openjfx-23.0.2_windows-x64_bin-sdk\\javafx-sdk-23.0.2\\lib\\javafx.web.jar",
         "c:\\openjfx-23.0.2_windows-x64_bin-sdk\\javafx-sdk-23.0.2\\lib\\javafx-swt.jar",
-        "c:\\Users\\HP\\Downloads\\sqlite-jdbc-3.49.1.0.jar"
+        "c:\\Users\\HP\\Downloads\\sqlite-jdbc-3.49.1.0.jar",
+        "c:\\Users\\HP\\Downloads\\controlsfx-8.40.14\\controlsfx-samples-8.40.14.jar",
+        "c:\\Users\\HP\\Downloads\\controlsfx-8.40.14\\fxsampler-1.0.10.jar",
+        "c:\\controlsfx-8.40.14\\controlsfx-8.40.14.jar"
     ]
 }

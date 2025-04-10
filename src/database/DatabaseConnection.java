@@ -64,7 +64,7 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             System.out.println("Error inserting vehicle: " + e.getMessage());
         }
-}
+    }
     
     public static boolean validateAgent(String name, String password) {
         String sql = "SELECT * FROM Agents WHERE name = ? AND password = ?";
@@ -87,22 +87,22 @@ public class DatabaseConnection {
     }
 
     public static boolean isExists(String name, String email) {
-    String sql = "SELECT 1 FROM Agents WHERE name = ? AND email = ? LIMIT 1";
-    
-    try (Connection conn = connect();
-         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        String sql = "SELECT 1 FROM Agents WHERE name = ? AND email = ? LIMIT 1";
         
-        pstmt.setString(1, name);
-        pstmt.setString(2, email);
+        try (Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, name);
+            pstmt.setString(2, email);
 
-        try (ResultSet rs = pstmt.executeQuery()) {
-            return rs.next(); 
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next(); 
+            }
+        } catch (SQLException e) {
+            System.err.println("Error validating agent: " + e.getMessage());
+            return false; 
         }
-    } catch (SQLException e) {
-        System.err.println("Error validating agent: " + e.getMessage());
-        return false; 
     }
-}
 
 
 
@@ -168,27 +168,27 @@ public class DatabaseConnection {
     }
 
     public static void main(String[] args) {
-        String sql = "SELECT * FROM Vehicles";
+        // String sql = "SELECT * FROM Vehicles";
 
-        try (Connection conn = connect();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql)) {
+        // try (Connection conn = connect();
+        //     Statement stmt = conn.createStatement();
+        //     ResultSet rs = stmt.executeQuery(sql)) {
 
-            while (rs.next()) {
-               System.out.println("Vehicle ID: " + rs.getInt("vehicle_id"));
-               System.out.println("Registration Number: " + rs.getString("registration_number"));
-               System.out.println("Brand: " + rs.getString("brand"));
-               System.out.println("Model: " + rs.getString("model"));
-               System.out.println("Category: " + rs.getString("category"));
-               System.out.println("Image Path: " + rs.getString("imagepath"));
-               System.out.println("Price: " + rs.getDouble("price"));
-               System.out.println("Availability Status: " + rs.getString("availability_status"));
-               System.out.println("-------------------------------");
-            }
+        //     while (rs.next()) {
+        //        System.out.println("Vehicle ID: " + rs.getInt("vehicle_id"));
+        //        System.out.println("Registration Number: " + rs.getString("registration_number"));
+        //        System.out.println("Brand: " + rs.getString("brand"));
+        //        System.out.println("Model: " + rs.getString("model"));
+        //        System.out.println("Category: " + rs.getString("category"));
+        //        System.out.println("Image Path: " + rs.getString("imagepath"));
+        //        System.out.println("Price: " + rs.getDouble("price"));
+        //        System.out.println("Availability Status: " + rs.getString("availability_status"));
+        //        System.out.println("-------------------------------");
+        //     }
 
-        } catch (SQLException e) {
-            System.out.println("Error retrieving data: " + e.getMessage());
-        }
+        // } catch (SQLException e) {
+        //     System.out.println("Error retrieving data: " + e.getMessage());
+        // }
         // String addcolumn = "ALTER TABLE Vehicles ADD COLUMN imagepath TEXT";
         // try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
         //     stmt.execute(addcolumn);

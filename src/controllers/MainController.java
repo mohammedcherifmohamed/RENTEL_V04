@@ -13,63 +13,36 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.controlsfx.control.PopOver;
 
 public class MainController implements Initializable {
 
-    @FXML
-    private Button Clients;
-    @FXML
-    private BorderPane bp;
+    @FXML private Button Clients;
+    @FXML    private BorderPane bp;
 
-    @FXML
-    private VBox display_content;
+    @FXML   private VBox display_content;
 
-    @FXML
-    private Label lblTotalClients;
+    @FXML private Label lblTotalClients;
 
-    @FXML
-    private Label lblTotalIncome;
+    @FXML private Label lblTotalIncome;
 
-    @FXML
-    private Label lblTotalRentals;
+    @FXML private Label lblTotalRentals;
 
-    @FXML
-    private Label lblTotalVehicles;
-    @FXML
-    private Button logout;
+    @FXML private Label lblTotalVehicles;
+    @FXML private Button logout;
+    @FXML private ImageView notification_icon;
+    @FXML private Label notification_label;
+    @FXML private Label user_label;
+    @FXML private StackPane popupContainer;
+    @FXML private ListView<String> notificationList;
+    private PopOver popOver;
 
-    @FXML
-    private ImageView notification_icon;
-
-    @FXML
-    private Label notification_label;
-    @FXML
-    private Label user_label;
-
-    @FXML
-    void home(MouseEvent event) {
-
-    }
-
-    @FXML
-    void page1(MouseEvent event) {
-
-    }
-
-    @FXML
-    void page2(MouseEvent event) {
-
-    }
-
-    @FXML
-    void page3(MouseEvent event) {
-
-    }
-    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         display_content.getChildren().clear();
@@ -82,6 +55,24 @@ public class MainController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+                // You can initialize once here
+                VBox popContent = new VBox(10);
+                popContent.setStyle("-fx-background-color: white; -fx-padding: 15;");
+        
+                Label notif1 = new Label("🔔 Reminder: Return vehicle by 5 PM");
+                Label notif2 = new Label("🚗 New vehicle added to fleet");
+                Label notif3 = new Label("👤 New client registered");
+                Label notif4 = new Label("👤 New client registered");
+                Label notif5 = new Label("👤 New client registered");
+                Label notif6 = new Label("👤 New client registered");
+                Label notif7 = new Label("👤 New client registered");
+                Label notif8 = new Label("👤 New client registered");
+        
+                popContent.getChildren().addAll(notif1, notif2, notif3, notif4, notif5, notif6, notif7, notif8);
+                popOver = new PopOver(popContent);
+                popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
+                popOver.setDetachable(false);
+                popOver.setAutoHide(true);
     }
 
     @FXML
@@ -136,6 +127,11 @@ public class MainController implements Initializable {
     @FXML
     void see_notification(MouseEvent  event) {
         System.out.println("see_notification");
+        if (popOver.isShowing()) {
+            popOver.hide();
+        } else {
+            popOver.show(notification_icon);
+        }
     }
     
     @FXML

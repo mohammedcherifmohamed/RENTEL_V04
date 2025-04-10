@@ -7,13 +7,18 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.ListView?>
+
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="bp" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #020725;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
@@ -32,7 +37,7 @@
                   </ImageView>
                </graphic>
             </Label>
-            <Button fx:id="dashboard" alignment="BOTTOM_LEFT" cache="true" minHeight="0.0" mnemonicParsing="false" onAction="#go_dashboard" onMouseClicked="#home" prefHeight="52.0" prefWidth="190.0" style="-fx-background-color: #1E1E2F;" styleClass="transparent-button" text="Dashboard" textFill="#4a61ff">
+            <Button fx:id="dashboard" alignment="BOTTOM_LEFT" cache="true" minHeight="0.0" mnemonicParsing="false" onAction="#go_dashboard"  prefHeight="52.0" prefWidth="190.0" style="-fx-background-color: #1E1E2F;" styleClass="transparent-button" text="Dashboard" textFill="#4a61ff">
                <font>
                   <Font name="Constantia Bold Italic" size="23.0" />
                </font>
@@ -43,7 +48,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="vehicles" alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="10.0" minHeight="0.0" mnemonicParsing="false" onAction="#go_vehicles" onMouseClicked="#page1" prefHeight="52.0" prefWidth="177.0" style="-fx-background-color: #1E1E2F;" styleClass="transparent-button" text="Vehicls " textFill="#4a61ff">
+            <Button fx:id="vehicles" alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="10.0" minHeight="0.0" mnemonicParsing="false" onAction="#go_vehicles"  prefHeight="52.0" prefWidth="177.0" style="-fx-background-color: #1E1E2F;" styleClass="transparent-button" text="Vehicls " textFill="#4a61ff">
                <font>
                   <Font name="Constantia Bold Italic" size="25.0" />
                </font>
@@ -54,7 +59,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="Clients" alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="62.0" minHeight="0.0" mnemonicParsing="false" onAction="#go_clients" onMouseClicked="#page2" prefHeight="52.0" prefWidth="176.0" style="-fx-background-color: #1E1E2F;" styleClass="transparent-button" text="Clients" textFill="#4a61ff">
+            <Button fx:id="Clients" alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="62.0" minHeight="0.0" mnemonicParsing="false" onAction="#go_clients"  prefHeight="52.0" prefWidth="176.0" style="-fx-background-color: #1E1E2F;" styleClass="transparent-button" text="Clients" textFill="#4a61ff">
                <font>
                   <Font name="Constantia Bold Italic" size="25.0" />
                </font>
@@ -65,7 +70,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="reports" alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="114.0" minHeight="0.0" mnemonicParsing="false" onAction="#go_reports" onMouseClicked="#page3" prefHeight="52.0" prefWidth="172.0" style="-fx-background-color: #1E1E2F;" styleClass="transparent-button" text="Reports" textFill="#4a61ff">
+            <Button fx:id="reports" alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="114.0" minHeight="0.0" mnemonicParsing="false" onAction="#go_reports"  prefHeight="52.0" prefWidth="172.0" style="-fx-background-color: #1E1E2F;" styleClass="transparent-button" text="Reports" textFill="#4a61ff">
                <font>
                   <Font name="Constantia Bold Italic" size="25.0" />
                </font>
@@ -91,7 +96,7 @@
                      <children>
                         <ImageView fitHeight="59.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../1177568.png" />
+                              <Image url="@../../pics/user2.png" />
                            </image>
                         </ImageView>
                         <Label fx:id="user_label" alignment="CENTER" prefHeight="40.0" prefWidth="156.0" text="User Name" textFill="#f80000" wrapText="true">
@@ -110,7 +115,7 @@
                      <children>
                         <ImageView fx:id="notification_icon" fitHeight="42.0" fitWidth="41.0" onMouseClicked="#see_notification" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../notification.png" />
+                              <Image url="@../../pics/notification2.png" />
                            </image>
                         </ImageView>
                         <Label fx:id="notification_label" prefHeight="23.0" prefWidth="36.0" text="+99" textFill="RED">
@@ -129,6 +134,7 @@
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
+         
       </VBox>
    </left>
    
@@ -263,4 +269,14 @@
          </children>
       </VBox>
    </center>
+   <!-- Overlay notification pop-up -->
+    <StackPane fx:id="popupContainer" style="-fx-background-color: rgba(0, 0, 0, 0.3);" visible="false" BorderPane.alignment="CENTER">
+        <VBox fx:id="popupContent" maxHeight="300" maxWidth="300" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 15;">
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Notifications" />
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200" prefWidth="300">
+                <ListView fx:id="notificationList" prefHeight="200" prefWidth="300" />
+            </ScrollPane>
+        </VBox>
+    </StackPane>
+
 </BorderPane>

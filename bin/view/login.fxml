@@ -55,7 +55,7 @@
                                     <Font name="Arial Rounded MT Bold" size="13.0" />
                                  </font>
                               </Button>
-                              <Label fx:id="err_msg" alignment="CENTER" contentDisplay="CENTER" layoutX="120.0" layoutY="114.0" prefHeight="72.0" prefWidth="254.0" text="Invalid UserName OR password" textAlignment="CENTER" textFill="RED" wrapText="true">
+                              <Label fx:id="err_msg" alignment="CENTER" contentDisplay="CENTER" layoutX="120.0" layoutY="114.0" prefHeight="72.0" prefWidth="254.0" text="" textAlignment="CENTER" textFill="RED" wrapText="true">
                                  <font>
                                     <Font name="System Italic" size="19.0" />
                                  </font>
