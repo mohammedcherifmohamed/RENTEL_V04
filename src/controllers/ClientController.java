@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -62,8 +63,44 @@ public class ClientController {
     public void initialize() {
         setupTable();
         loadSampleData();
-    }
+        setupRowClick();
 
+    }
+    private void setupRowClick() {
+        carTable.setRowFactory(tv -> {
+            TableRow<Client> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getClickCount() == 1) {
+                    System.out.println("Row clicked: " + row.getItem());
+
+                    Client clickedClient = row.getItem();
+                    showClientDetails(clickedClient);
+                }
+            });
+            return row;
+        });
+    }
+    private void showClientDetails(Client client) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ClientDetails.fxml"));
+            Parent root = loader.load();
+    
+            // Get the controller instance
+            ClientDetailsController controller = loader.getController();
+            controller.setClientDetails(client);  // <-- Send client data
+            controller.setClientController(this); // ✅ FIX: Set reference to refresh later
+
+    
+            Stage stage = new Stage();
+            stage.setTitle("Client Details");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+        
     private void setupTable() {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         contactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
@@ -77,7 +114,7 @@ public class ClientController {
     }
    
     public void loadSampleData() {
-        String sql = "SELECT c.name, c.contact_details, r.start_date, r.end_date, r.total_cost , r.model , r.brand " +
+        String sql = "SELECT c.name, c.contact_details, c.rental_history , r.start_date, r.end_date, r.total_cost , r.model , r.brand " +
                      "FROM Clients c " +
                      "JOIN Rentals r ON c.client_id = r.client_id " ;
     
@@ -94,8 +131,9 @@ public class ClientController {
                 String model = rs.getString("model");
                 String start = rs.getString("start_date");
                 String end = rs.getString("end_date");
+                String rental_history = rs.getString("rental_history");
                 String totalCost = String.valueOf(rs.getDouble("total_cost"));
-                clientList.add(new Client(name,contact,brand, model, start, end,totalCost));
+                clientList.add(new Client(name,contact,brand, model, start, end,totalCost, rental_history));
 
             }
             carTable.refresh(); 
@@ -110,7 +148,7 @@ public class ClientController {
     String searchValue = searchBar.getText();
     System.out.println(searchValue);
 
-    String sql = "SELECT c.name, c.contact_details, r.start_date, r.end_date, r.total_cost, r.model, r.brand " +
+    String sql = "SELECT c.name, c.contact_details, c.rental_history, r.start_date, r.end_date, r.total_cost, r.model, r.brand " +
                  "FROM Clients c " +
                  "JOIN Rentals r ON c.client_id = r.client_id";
 
@@ -128,9 +166,10 @@ public class ClientController {
             String start = rs.getString("start_date");
             String end = rs.getString("end_date");
             String totalCost = rs.getString("total_cost");
+            String rental_history = rs.getString("rental_history");
 
             if (contact.toLowerCase().contains(searchValue.toLowerCase())) {
-                clientList.add(new Client(name, contact, brand, model, start, end, totalCost));
+                clientList.add(new Client(name, contact, brand, model, start, end, totalCost, rental_history));
             }
         }
         carTable.refresh();

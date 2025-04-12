@@ -9,8 +9,10 @@ public class Client {
     private final SimpleStringProperty startDate;
     private final SimpleStringProperty endDate;
     private final SimpleStringProperty totalPrice;
+    private final SimpleStringProperty RentalHistory;
 
-    public Client(String name, String contact, String brand, String model, String startDate, String endDate, String totalPrice) {
+    public Client(String name, String contact, String brand, String model, String startDate, String endDate, String totalPrice ,String RentalHistory) {
+        this.RentalHistory = new SimpleStringProperty(RentalHistory);
         this.name = new SimpleStringProperty(name);
         this.contact = new SimpleStringProperty(contact);
         this.brand = new SimpleStringProperty(brand);
@@ -27,6 +29,7 @@ public class Client {
         this.startDate = new SimpleStringProperty("xxx");
         this.endDate = new SimpleStringProperty("xxx");
         this.totalPrice = new SimpleStringProperty("xxx");
+        this.RentalHistory = new SimpleStringProperty("xxx");
     }
 
     public String getName() { return name.get(); }
@@ -36,4 +39,6 @@ public class Client {
     public String getStartDate() { return startDate.get(); }
     public String getEndDate() { return endDate.get(); }
     public String getTotalPrice() { return totalPrice.get(); }
+    public String getRentalHistory() { return RentalHistory.get(); }
+
 }

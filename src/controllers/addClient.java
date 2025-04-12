@@ -84,7 +84,7 @@ public class addClient implements Initializable {
             long daysBetween = ChronoUnit.DAYS.between(StartDate.getValue(), EndDate.getValue());
 
             String checkSql = "SELECT client_id FROM Clients WHERE name = ? AND contact_details = ?";
-            String insertClientSql = "INSERT INTO Clients (name, contact_details) VALUES (?, ?)";
+            String insertClientSql = "INSERT INTO Clients (name, contact_details,rental_history) VALUES (?, ?,?)";
             String insertRentalSql = "INSERT INTO Rentals ( client_id, agent_id, start_date, end_date, total_cost,brand,model) VALUES ( ?, ?, ?, ?, ?,?,?)";
 
             try (Connection conn = DatabaseConnection.connect();
@@ -105,6 +105,7 @@ public class addClient implements Initializable {
                     try (PreparedStatement insertClientStmt = conn.prepareStatement(insertClientSql, Statement.RETURN_GENERATED_KEYS)) {
                         insertClientStmt.setString(1, name.getText());
                         insertClientStmt.setString(2, contact.getText());
+                        insertClientStmt.setString(3, txtRentalHistory.getText());
                         insertClientStmt.executeUpdate();
 
                         ResultSet generatedKeys = insertClientStmt.getGeneratedKeys();
@@ -123,7 +124,7 @@ public class addClient implements Initializable {
                     insertRentalStmt.setInt(2, 99); // You should get this from your session or login info
                     insertRentalStmt.setString(3, StartDate.getValue().toString());
                     insertRentalStmt.setString(4, EndDate.getValue().toString());
-                    insertRentalStmt.setDouble(5, daysBetween * 10); // Calculate cost from days and rate
+                    insertRentalStmt.setDouble(5, daysBetween * Double.parseDouble(txtTotalPrice.getText()) ); 
                     insertRentalStmt.setString(6, brand.getValue());
                     insertRentalStmt.setString(7, model.getValue());
                     insertRentalStmt.executeUpdate();

@@ -89,18 +89,20 @@ public class dashboardController implements Initializable {
             System.out.println("Error fetching total clients: " + e.getMessage());
         }
     
-        // // Fetch total income (Sum of all payments)
-        // String sqlIncome = "SELECT SUM(amount) FROM Payments";
-        // try (PreparedStatement pstmt = connection.prepareStatement(sqlIncome);
-        //      ResultSet rs = pstmt.executeQuery()) {
-    
-        //     if (rs.next()) {
-        //         double totalIncome = rs.getDouble(1);
-        //         lblTotalIncome.setText(String.format("%.2f", totalIncome));  // Format as currency
-        //     }
-        // } catch (SQLException e) {
-        //     System.out.println("Error fetching total income: " + e.getMessage());
-        // }
+        // Fetch total income (sum of total_cost from Rentals table)
+    String sqlIncome = "SELECT SUM(total_cost) FROM Rentals";
+    try (Connection conn = DatabaseConnection.connect(); // Assuming you have a DatabaseConnection utility
+        PreparedStatement pstmt = conn.prepareStatement(sqlIncome);
+        ResultSet rs = pstmt.executeQuery()) {
+
+        if (rs.next()) {
+            double totalIncome = rs.getDouble(1); // Get the sum from the result set
+            lblTotalIncome.setText(String.format("%.2f", totalIncome));  // Display total income, format as currency
+        }
+    } catch (SQLException e) {
+        System.out.println("Error fetching total income: " + e.getMessage());
+    }
+
     }
     
 
