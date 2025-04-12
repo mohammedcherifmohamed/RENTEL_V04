@@ -195,7 +195,7 @@ public class VehiclesController implements Initializable {
                             // System.out.println("FROM seeDetails :" + brand + "_"+model+ "_"+category+ "_"+price+ "_"+regNbr+ "_"+imagePath);
                             showCarDetails( model,  brand,  category,  price,regNbr,  imagePath);
                         // BorderPane vehicleCard = createVehicleCard(name, category, price, imagePath, regNbr);
-                        break; // Stop after finding the first match
+                        break; 
                     }
                 }
                 
@@ -212,7 +212,7 @@ private void showCarDetails(String model, String brand, String category, double 
 
         CarDetailsController controller = loader.getController();
         controller.setCarDetails(model, brand, category, price, rgnbr, imgpath);
-        controller.setVehiclesController(this); // Pass reference of VehiclesController
+        controller.setVehiclesController(this); 
 
         Stage stage = new Stage();
         stage.setTitle("Car Details");

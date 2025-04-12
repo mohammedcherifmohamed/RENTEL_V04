@@ -168,6 +168,7 @@ public class DatabaseConnection {
     }
 
     public static void main(String[] args) {
+        
         // String sql = "SELECT * FROM Vehicles";
 
         // try (Connection conn = connect();
@@ -189,7 +190,7 @@ public class DatabaseConnection {
         // } catch (SQLException e) {
         //     System.out.println("Error retrieving data: " + e.getMessage());
         // }
-        // String addcolumn = "ALTER TABLE Vehicles ADD COLUMN imagepath TEXT";
+        // String addcolumn = "ALTER DELETE COLUMN from Rentels vehicle_id";
         // try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
         //     stmt.execute(addcolumn);
         //     System.out.println("Column 'imagepath' added successfully to Vehicles table.");
@@ -197,10 +198,10 @@ public class DatabaseConnection {
         //     System.out.println("Error adding column: " + e.getMessage());
         // }
 
-        // String deleteData = "DELETE FROM Vehicles";      
+        // String deleteData = "DELETE FROM Clients";      
         // try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
         //     stmt.execute(deleteData);
-        //     System.out.println("All data deleted from Vehicles table.");
+        //     System.out.println("All data deleted from Clients table.");
         // } catch (SQLException e) {
         //     System.out.println("Error deleting data: " + e.getMessage());
         // }

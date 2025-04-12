@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import database.DatabaseConnection;
 import javafx.collections.FXCollections;
@@ -19,6 +20,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import models.Client;
@@ -54,13 +56,12 @@ public class ClientController {
     @FXML
     private TableColumn<Client, String> total_price;
 
-    // ObservableList to store client data
     private ObservableList<Client> clientList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
         setupTable();
-        loadSampleData();  // Add sample data when the app starts
+        loadSampleData();
     }
 
     private void setupTable() {
@@ -74,38 +75,77 @@ public class ClientController {
 
         carTable.setItems(clientList);
     }
-
-    // Load some initial data into the table
+   
     public void loadSampleData() {
-        String sql = "SELECT name, contact_details FROM Clients";
+        String sql = "SELECT c.name, c.contact_details, r.start_date, r.end_date, r.total_cost , r.model , r.brand " +
+                     "FROM Clients c " +
+                     "JOIN Rentals r ON c.client_id = r.client_id " ;
+    
         try (Connection conn = DatabaseConnection.connect();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
-    
-            clientList.clear(); // Clear existing data before loading new ones
-    
+             clientList.clear(); 
+
             while (rs.next()) {
+    
                 String name = rs.getString("name");
                 String contact = rs.getString("contact_details");
-    
-                clientList.add(new Client(name, contact));
+                String brand = rs.getString("brand");
+                String model = rs.getString("model");
+                String start = rs.getString("start_date");
+                String end = rs.getString("end_date");
+                String totalCost = String.valueOf(rs.getDouble("total_cost"));
+                clientList.add(new Client(name,contact,brand, model, start, end,totalCost));
+
             }
-    
-            carTable.refresh(); // Refresh table view after updating data
+            carTable.refresh(); 
     
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    // Add a new client when the button is clicked
+    @FXML
+    void search(KeyEvent event) {
+    String searchValue = searchBar.getText();
+    System.out.println(searchValue);
+
+    String sql = "SELECT c.name, c.contact_details, r.start_date, r.end_date, r.total_cost, r.model, r.brand " +
+                 "FROM Clients c " +
+                 "JOIN Rentals r ON c.client_id = r.client_id";
+
+    try (Connection conn = DatabaseConnection.connect();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+
+        clientList.clear();
+
+        while (rs.next()) {
+            String name = rs.getString("name");
+            String contact = rs.getString("contact_details");
+            String brand = rs.getString("brand");
+            String model = rs.getString("model");
+            String start = rs.getString("start_date");
+            String end = rs.getString("end_date");
+            String totalCost = rs.getString("total_cost");
+
+            if (contact.toLowerCase().contains(searchValue.toLowerCase())) {
+                clientList.add(new Client(name, contact, brand, model, start, end, totalCost));
+            }
+        }
+        carTable.refresh();
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
     @FXML
 void AddClientbtn(ActionEvent event) {
     try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/addClient.fxml"));
         Parent root = loader.load();
 
-        // Get controller of addClient
         addClient addClientController = loader.getController();
         addClientController.setClientController(this); // Pass reference
 
@@ -113,10 +153,8 @@ void AddClientbtn(ActionEvent event) {
         stage.setTitle("Add Client");
         stage.setScene(new Scene(root));
 
-        stage.showAndWait(); // Wait until closed, then refresh data
-
-        loadSampleData(); // Refresh the table after dialog closes
-
+        stage.showAndWait(); 
+        loadSampleData();
     } catch (IOException e) {
         e.printStackTrace();
     }

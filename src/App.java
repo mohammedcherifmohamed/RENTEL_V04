@@ -13,7 +13,7 @@ public class App extends Application {
     public void start(Stage stage) {
         try {
             
-            Parent root = FXMLLoader.load(getClass().getResource("/view/MainView.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/view/Clients.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             //    stage.setFullScreen(true); 

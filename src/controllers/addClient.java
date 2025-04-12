@@ -4,6 +4,8 @@ import database.DatabaseConnection;
 import java.util.ResourceBundle;
 import java.net.URL;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.temporal.ChronoUnit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,32 +24,15 @@ import javax.swing.text.TableView;
 
 public class addClient implements Initializable {
 
-    @FXML
-    private DatePicker EndDate;
-
-    @FXML
-    private DatePicker StartDate;
-
-    @FXML
-    private ComboBox<String> brand;
-
-    @FXML
-    private Button btnConfirmRental;
-
-    @FXML
-    private TextArea contact;
-
-    @FXML
-    private ComboBox<String> model;
-
-    @FXML
-    private TextField name;
-
-    @FXML
-    private TextArea txtRentalHistory;
-
-    @FXML
-    private TextField txtTotalPrice;
+    @FXML    private DatePicker EndDate;
+    @FXML    private DatePicker StartDate;
+    @FXML    private ComboBox<String> brand;
+    @FXML    private Button btnConfirmRental;
+    @FXML    private TextArea contact;
+    @FXML    private ComboBox<String> model;
+    @FXML    private TextField name;
+    @FXML    private TextArea txtRentalHistory;
+    @FXML    private TextField txtTotalPrice;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -97,36 +82,61 @@ public class addClient implements Initializable {
     void ConfirmRental(ActionEvent event) {
         if (StartDate.getValue() != null && EndDate.getValue() != null) {
             long daysBetween = ChronoUnit.DAYS.between(StartDate.getValue(), EndDate.getValue());
-    
-            String checkSql = "SELECT COUNT(*) FROM Clients WHERE name = ? AND contact_details = ?";
-            String insertSql = "INSERT INTO Clients (name, contact_details) VALUES (?, ?)";
-    
+
+            String checkSql = "SELECT client_id FROM Clients WHERE name = ? AND contact_details = ?";
+            String insertClientSql = "INSERT INTO Clients (name, contact_details) VALUES (?, ?)";
+            String insertRentalSql = "INSERT INTO Rentals ( client_id, agent_id, start_date, end_date, total_cost,brand,model) VALUES ( ?, ?, ?, ?, ?,?,?)";
+
             try (Connection conn = DatabaseConnection.connect();
                  PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
-    
+
                 checkStmt.setString(1, name.getText());
                 checkStmt.setString(2, contact.getText());
                 ResultSet rs = checkStmt.executeQuery();
-    
-                if (rs.next() && rs.getInt(1) == 0) { // If client does not exist
-                    try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
-                        insertStmt.setString(1, name.getText());
-                        insertStmt.setString(2, contact.getText());
-                        insertStmt.executeUpdate();
-                        System.out.println("New client added.");
-    
-                        // Refresh the table
-                        if (clientController != null) {
-                            clientController.loadSampleData();
-                        }
-    
-                        // Close the window
-                        ((Stage) btnConfirmRental.getScene().getWindow()).close();
-                    }
-                } else {
+
+                int clientId;
+
+                if (rs.next()) {
+                    // Client exists
+                    clientId = rs.getInt("client_id");
                     System.out.println("Client already exists.");
+                } else {
+                    // Client does not exist, insert them
+                    try (PreparedStatement insertClientStmt = conn.prepareStatement(insertClientSql, Statement.RETURN_GENERATED_KEYS)) {
+                        insertClientStmt.setString(1, name.getText());
+                        insertClientStmt.setString(2, contact.getText());
+                        insertClientStmt.executeUpdate();
+
+                        ResultSet generatedKeys = insertClientStmt.getGeneratedKeys();
+                        if (generatedKeys.next()) {
+                            clientId = generatedKeys.getInt(1);
+                            System.out.println("New client added with ID: " + clientId);
+                        } else {
+                            throw new SQLException("Creating client failed, no ID obtained.");
+                        }
+                    }
                 }
-    
+
+                // Insert into Rentals
+                try (PreparedStatement insertRentalStmt = conn.prepareStatement(insertRentalSql)) {
+                    insertRentalStmt.setInt(1, clientId);
+                    insertRentalStmt.setInt(2, 99); // You should get this from your session or login info
+                    insertRentalStmt.setString(3, StartDate.getValue().toString());
+                    insertRentalStmt.setString(4, EndDate.getValue().toString());
+                    insertRentalStmt.setDouble(5, daysBetween * 10); // Calculate cost from days and rate
+                    insertRentalStmt.setString(6, brand.getValue());
+                    insertRentalStmt.setString(7, model.getValue());
+                    insertRentalStmt.executeUpdate();
+
+                    System.out.println("Rental confirmed.");
+
+                    if (clientController != null) {
+                        clientController.loadSampleData();
+                    }
+
+                    ((Stage) btnConfirmRental.getScene().getWindow()).close();
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -134,6 +144,7 @@ public class addClient implements Initializable {
             System.out.println("Please select both start and end dates.");
         }
     }
+
     
 
     
