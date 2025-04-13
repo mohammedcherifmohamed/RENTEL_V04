@@ -87,8 +87,8 @@ public class ClientController {
     
             // Get the controller instance
             ClientDetailsController controller = loader.getController();
-            controller.setClientDetails(client);  // <-- Send client data
-            controller.setClientController(this); // ✅ FIX: Set reference to refresh later
+            controller.setClientDetails(client);  
+            controller.setClientController(this); 
 
     
             Stage stage = new Stage();
@@ -165,7 +165,7 @@ public class ClientController {
             String model = rs.getString("model");
             String start = rs.getString("start_date");
             String end = rs.getString("end_date");
-            String totalCost = rs.getString("total_cost");
+            String totalCost = rs.getString("total_cost") ;
             String rental_history = rs.getString("rental_history");
 
             if (contact.toLowerCase().contains(searchValue.toLowerCase())) {

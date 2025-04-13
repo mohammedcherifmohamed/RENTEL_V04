@@ -1,6 +1,12 @@
 package controllers;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.image.ImageView;
 
@@ -55,25 +61,62 @@ public class MainController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-                // You can initialize once here
-                VBox popContent = new VBox(10);
-                popContent.setStyle("-fx-background-color: white; -fx-padding: 15;");
-        
-                Label notif1 = new Label("🔔 Reminder: Return vehicle by 5 PM");
-                Label notif2 = new Label("🚗 New vehicle added to fleet");
-                Label notif3 = new Label("👤 New client registered");
-                Label notif4 = new Label("👤 New client registered");
-                Label notif5 = new Label("👤 New client registered");
-                Label notif6 = new Label("👤 New client registered");
-                Label notif7 = new Label("👤 New client registered");
-                Label notif8 = new Label("👤 New client registered");
-        
-                popContent.getChildren().addAll(notif1, notif2, notif3, notif4, notif5, notif6, notif7, notif8);
-                popOver = new PopOver(popContent);
-                popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
-                popOver.setDetachable(false);
-                popOver.setAutoHide(true);
+        checkNotifications();
     }
+    void checkNotifications() {
+        VBox popContent = new VBox(10);
+        popContent.setStyle("-fx-background-color: white; -fx-padding: 15;");
+        
+        List<RentalReminder> reminders = getRentalReminders();
+
+        if (reminders.isEmpty()) {
+            popContent.getChildren().add(new Label("✅ No upcoming returns."));
+        } else {
+            for (RentalReminder reminder : reminders) {
+                String msg = "🔔 " + reminder.getClientName() + 
+                            " should return " + reminder.getVehicleBrand() +
+                            " " + reminder.getVehicleModel() +
+                            " by " + reminder.getEndDate();
+                popContent.getChildren().add(new Label(msg));
+            }
+        }
+
+        popOver = new PopOver(popContent);
+        popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
+        popOver.setDetachable(false);
+        popOver.setAutoHide(true);
+    }
+public List<RentalReminder> getRentalReminders() {
+    List<RentalReminder> reminders = new ArrayList<>();
+    String sql = """
+       SELECT Rentals.rental_id, Clients.name, Rentals.brand, Rentals.model, Rentals.end_date
+        FROM Rentals
+        JOIN Clients ON Rentals.client_id = Clients.client_id
+        WHERE DATE(Rentals.end_date) <= DATE('now', '+1 day')
+        ORDER BY Rentals.end_date ASC
+            """;
+
+    try (Connection conn = DatabaseConnection.connect(); 
+         PreparedStatement pstmt = conn.prepareStatement(sql);
+         ResultSet rs = pstmt.executeQuery()) {
+
+        while (rs.next()) {
+            RentalReminder r = new RentalReminder(
+                rs.getInt("rental_id"),
+                rs.getString("name"),
+                rs.getString("end_date"),
+                rs.getString("brand"),
+                rs.getString("model")
+            );
+            reminders.add(r);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return reminders;
+}
 
     @FXML
     void go_dashboard(ActionEvent event) {

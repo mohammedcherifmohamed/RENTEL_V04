@@ -63,18 +63,18 @@ public class dashboardController implements Initializable {
             System.out.println("Error fetching total vehicles: " + e.getMessage());
         }
     
-        // // Fetch total rentals
-        // String sqlRentals = "SELECT COUNT(*) FROM Rentals";
-        // try (PreparedStatement pstmt = connection.prepareStatement(sqlRentals);
-        //      ResultSet rs = pstmt.executeQuery()) {
+        // Fetch total rentals
+        String sqlRentals = "SELECT COUNT(*) FROM Rentals";
+        try (PreparedStatement pstmt = connection.prepareStatement(sqlRentals);
+             ResultSet rs = pstmt.executeQuery()) {
     
-        //     if (rs.next()) {
-        //         int totalRentals = rs.getInt(1);
-        //         lblTotalRentals.setText(String.valueOf(totalRentals));
-        //     }
-        // } catch (SQLException e) {
-        //     System.out.println("Error fetching total rentals: " + e.getMessage());
-        // }
+            if (rs.next()) {
+                int totalRentals = rs.getInt(1);
+                lblTotalRentals.setText(String.valueOf(totalRentals));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching total rentals: " + e.getMessage());
+        }
     
         // // Fetch total clients
         String sqlClients = "SELECT COUNT(*) FROM Clients";
@@ -89,7 +89,6 @@ public class dashboardController implements Initializable {
             System.out.println("Error fetching total clients: " + e.getMessage());
         }
     
-        // Fetch total income (sum of total_cost from Rentals table)
     String sqlIncome = "SELECT SUM(total_cost) FROM Rentals";
     try (Connection conn = DatabaseConnection.connect(); // Assuming you have a DatabaseConnection utility
         PreparedStatement pstmt = conn.prepareStatement(sqlIncome);
