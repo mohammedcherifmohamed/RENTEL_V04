@@ -31,15 +31,10 @@ public class MainController implements Initializable {
 
     @FXML private Button Clients;
     @FXML    private BorderPane bp;
-
     @FXML   private VBox display_content;
-
     @FXML private Label lblTotalClients;
-
     @FXML private Label lblTotalIncome;
-
     @FXML private Label lblTotalRentals;
-
     @FXML private Label lblTotalVehicles;
     @FXML private Button logout;
     @FXML private ImageView notification_icon;

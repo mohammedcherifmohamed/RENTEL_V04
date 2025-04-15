@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,6 +29,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -85,82 +87,103 @@ public class VehiclesController implements Initializable {
         }
     }
 
-    public void loadVehicles() {
-        String query = "SELECT * FROM vehicles"; 
-        try (PreparedStatement stmt = connection.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+   public void loadVehicles() {
+    vehicleGrid.getChildren().clear(); // ✅ Clear old vehicle cards
 
-            int column = 0, row = 0;
-            while (rs.next()) {
-                String name = rs.getString("brand");
-                String category = rs.getString("model");
-                String price = rs.getString("price");
-                String imagePath = rs.getString("imagepath");
-                String regNbr = rs.getString("registration_number");
-                // System.out.println("FROM DATABASE :"+imagePath+"_________________");
-                BorderPane vehicleCard = createVehicleCard(name, category, price,imagePath,regNbr);
+    String query = "SELECT * FROM vehicles"; 
+    try (PreparedStatement stmt = connection.prepareStatement(query);
+         ResultSet rs = stmt.executeQuery()) {
 
-                vehicleGrid.add(vehicleCard, column, row);  
+        int column = 0, row = 0;
+        while (rs.next()) {
+            String name = rs.getString("brand");
+            String category = rs.getString("model");
+            String price = rs.getString("price");
+            String imagePath = rs.getString("imagepath");
+            String regNbr = rs.getString("registration_number");
+            String availability = rs.getString("availability_status"); // NEW
 
-                column++;
-                if (column == 4) { // Adjust based on layout preference
-                    column = 0;
-                    row++;
-                }
+            BorderPane vehicleCard = createVehicleCard(name, category, price, imagePath, regNbr, availability); // UPDATED
+
+            vehicleGrid.add(vehicleCard, column, row);  
+
+            column++;
+            if (column == 4) { // Adjust based on layout preference
+                column = 0;
+                row++;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+private BorderPane createVehicleCard(String name, String category, String price, String imagePath, String reg_nbr, String availability) {
+    BorderPane card = new BorderPane();
+    card.setOnMousePressed(this::seeDetails);
+    card.setStyle("-fx-background-color: #2C2F4A; -fx-background-radius: 20;");
+    card.setPrefSize(200, 200);
+    card.setId(reg_nbr);
+
+    ImageView carImage = new ImageView();
+    carImage.setFitHeight(110);
+    carImage.setFitWidth(150);
+    carImage.setPreserveRatio(true);
+    try {
+        carImage.setImage(new Image("file:" + imagePath)); // Ensure correct path format
+    } catch (Exception e) {
+        System.out.println("Image not found: " + imagePath);
     }
 
-    private BorderPane createVehicleCard(String name, String category, String price, String imagePath, String reg_nbr) {
-        BorderPane card = new BorderPane();
-        card.setOnMousePressed(this::seeDetails);
-        card.setStyle("-fx-background-color: #2C2F4A; -fx-background-radius: 20;");
-        card.setPrefSize(200, 200);
-        card.setId(reg_nbr);
+    StackPane imageWrapper = new StackPane(carImage);
 
-        ImageView carImage = new ImageView();
-        carImage.setFitHeight(110);
-        carImage.setFitWidth(150);
-        carImage.setPreserveRatio(true);
-        try {
-            carImage.setImage(new Image("file:"+imagePath)); // Ensure correct path format
-        } catch (Exception e) {
-            System.out.println("Image not found: " + imagePath);
-        }
-
-        VBox centerBox = new VBox(10);
-        centerBox.setStyle("-fx-alignment: center;");
-        Label nameLabel = new Label(name);
-        nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 17px;");
-
-        Label categoryLabel = new Label(category);
-        categoryLabel.setStyle("-fx-text-fill: #909090;");
-
-        centerBox.getChildren().addAll(nameLabel, categoryLabel);
-
-        HBox bottomBox = new HBox(5);
-        bottomBox.setStyle("-fx-alignment: center;");
-
-        Label priceLabel = new Label(price);
-        priceLabel.setStyle("-fx-text-fill: #4a61ff; -fx-font-size: 20px;");
-
-        Label perDayLabel = new Label("/DAY");
-        perDayLabel.setStyle("-fx-text-fill: white; -fx-font-size: 9px;");
-
-        bottomBox.getChildren().addAll(priceLabel, perDayLabel);
-
-        // card.setTop(carImage);
-        card.setCenter(centerBox);
-        card.setBottom(bottomBox);
-        card.setTop(carImage);
-        BorderPane.setMargin(carImage, new Insets(10));
-        BorderPane.setMargin(centerBox, new Insets(10, 0, 0, 0));
-        BorderPane.setMargin(bottomBox, new Insets(0, 0, 10, 5));
-
-        return card;
+    if (!availability.equals("Available")) {
+        Label rentedLabel = new Label("RENTED");
+        rentedLabel.setStyle(
+            "-fx-background-color: #e74c3c;" + // red
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 11px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-background-radius: 6;" +
+            "-fx-padding: 3 6 3 6;"
+        );
+        StackPane.setAlignment(rentedLabel, Pos.TOP_RIGHT);
+        StackPane.setMargin(rentedLabel, new Insets(5, 5, 0, 0));
+        imageWrapper.getChildren().add(rentedLabel);
     }
+
+    VBox centerBox = new VBox(10);
+    centerBox.setStyle("-fx-alignment: center;");
+    Label nameLabel = new Label(name);
+    nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 17px;");
+
+    Label categoryLabel = new Label(category);
+    categoryLabel.setStyle("-fx-text-fill: #909090;");
+
+    centerBox.getChildren().addAll(nameLabel, categoryLabel);
+
+    HBox bottomBox = new HBox(5);
+    bottomBox.setStyle("-fx-alignment: center;");
+
+    Label priceLabel = new Label(price);
+    priceLabel.setStyle("-fx-text-fill: #4a61ff; -fx-font-size: 20px;");
+
+    Label perDayLabel = new Label("/DAY");
+    perDayLabel.setStyle("-fx-text-fill: white; -fx-font-size: 9px;");
+
+    bottomBox.getChildren().addAll(priceLabel, perDayLabel);
+
+    card.setCenter(centerBox);
+    card.setBottom(bottomBox);
+    card.setTop(imageWrapper); // Use image with conditional badge
+    BorderPane.setMargin(imageWrapper, new Insets(10));
+    BorderPane.setMargin(centerBox, new Insets(10, 0, 0, 0));
+    BorderPane.setMargin(bottomBox, new Insets(0, 0, 10, 5));
+
+    return card;
+}
+
+
     
 
     @FXML
@@ -243,7 +266,7 @@ private void showCarDetails(String model, String brand, String category, double 
                 String imagePath = rs.getString("imagepath");
                 String regNbr = rs.getString("registration_number");
                 if(category.toLowerCase().contains(search_value.toLowerCase())){
-                    BorderPane vehicleCard = createVehicleCard(name, category, price,imagePath,regNbr);
+                    BorderPane vehicleCard = createVehicleCard(name, category, price,imagePath,regNbr,"Available");
                     vehicleGrid.add(vehicleCard, column, row);
                     
                     column++;

@@ -43,11 +43,20 @@
                   </Label>
                </children>
             </VBox>
-            <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleEditButton" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 30;" text="Edit" VBox.vgrow="ALWAYS">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Button>
+            <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="82.0" prefWidth="460.0">
+               <children>
+                  <Button fx:id="btnAdd" layoutX="119.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleEditButton" prefHeight="46.0" prefWidth="133.0" style="-fx-background-radius: 30;" text="Edit">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="remove_carBtn" layoutX="270.0" layoutY="13.0" mnemonicParsing="false" onAction="#remove_car" prefHeight="46.0" prefWidth="116.0" style="-fx-background-radius: 30;" text="Remove" textFill="RED">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
          </children>
          <padding>
             <Insets left="20.0" right="20.0" />

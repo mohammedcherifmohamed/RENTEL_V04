@@ -22,6 +22,8 @@ import javafx.stage.FileChooser;
 import javax.naming.spi.DirStateFactory;
 
 public class CarDetailsController {
+    @FXML
+    private Button remove_carBtn;
 
     @FXML
     private TextField brand;
@@ -121,4 +123,26 @@ void handleEditButton(ActionEvent event) {
     }
 
 
+    @FXML
+    void remove_car(ActionEvent event) {
+        System.out.println("remove car button clicked" + " " + reg_nbr.getText());
+        String query = "DELETE FROM Vehicles WHERE registration_number = ?";
+        try (Connection conn = DatabaseConnection.connect();
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, reg_nbr.getText());
+            pstmt.executeUpdate();
+
+            if (vehiclesController != null) {
+                vehiclesController.loadVehicles();
+                System.out.println("VehiclesController is not null");
+            }
+
+            ((Stage) ((Button) event.getSource()).getScene().getWindow()).close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

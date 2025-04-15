@@ -77,7 +77,6 @@ public class ClientDetailsController implements Initializable  {
         txtTotalPrice.setText(client.getTotalPrice());
         txtRentalHistory.setText(client.getRentalHistory());
     
-        // Assuming start and end dates are strings in format "yyyy-MM-dd"
         StartDate.setValue(LocalDate.parse(client.getStartDate()));
         EndDate.setValue(LocalDate.parse(client.getEndDate()));
     
@@ -87,6 +86,21 @@ public class ClientDetailsController implements Initializable  {
     @FXML
     void remove_client(ActionEvent event) {
         System.out.println(name.getText() + " has been removed from the database.");
+        String sql = "DELETE FROM Clients WHERE name = ? AND contact_details = ?";
+        try {
+            Connection conn = DatabaseConnection.connect();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, name.getText());
+            stmt.setString(2, contact.getText());
+            stmt.executeUpdate();
+            System.out.println("Client removed from database.");
+            if (clientController != null) {
+                clientController.loadSampleData();
+            }
+            ((Stage) rm_btn.getScene().getWindow()).close();
+        } catch (Exception e) {
+
+        }
     }
     private ClientController clientController;
 

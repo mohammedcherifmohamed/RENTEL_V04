@@ -86,7 +86,7 @@ public class addClient implements Initializable {
             String checkSql = "SELECT client_id FROM Clients WHERE name = ? AND contact_details = ?";
             String insertClientSql = "INSERT INTO Clients (name, contact_details,rental_history) VALUES (?, ?,?)";
             String insertRentalSql = "INSERT INTO Rentals ( client_id, agent_id, start_date, end_date, total_cost,brand,model) VALUES ( ?, ?, ?, ?, ?,?,?)";
-
+            updateVehicleStatus( model.getValue() ,  brand.getValue(),  "Rented");
             try (Connection conn = DatabaseConnection.connect();
                  PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
 
@@ -147,7 +147,22 @@ public class addClient implements Initializable {
     }
 
     
-
+    public void updateVehicleStatus(String model, String brand, String newStatus) {
+        String query = "UPDATE Vehicles SET availability_status = ? WHERE brand = ? AND model = ?";
+    
+        try (Connection connection = DatabaseConnection.connect();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, newStatus);
+            stmt.setString(2, brand);
+            stmt.setString(3, model);
+            stmt.executeUpdate();
+            System.out.println("Vehicle status updated to: " + newStatus);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
     
 
     @FXML

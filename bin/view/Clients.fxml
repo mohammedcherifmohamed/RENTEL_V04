@@ -34,7 +34,7 @@
             <Insets top="20.0" />
          </padding>
       </HBox>
-      <TableView fx:id="carTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="477.0" prefWidth="760.0" style="-fx-background-color: #FFFFFF;" VBox.vgrow="ALWAYS">
+      <TableView fx:id="carTable" prefHeight="600.0" prefWidth="760.0" style="-fx-background-color: #FFFFFF;" VBox.vgrow="ALWAYS">
 
     <!-- Columns -->
     <columns>
