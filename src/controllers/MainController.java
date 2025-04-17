@@ -131,8 +131,16 @@ public List<RentalReminder> getRentalReminders() {
     @FXML
     void go_reports(ActionEvent event) {
         System.out.println("go_reports");
-
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/report.fxml"));
+            Parent reportsView = loader.load();
+            display_content.getChildren().clear();
+            display_content.getChildren().add(reportsView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+    
 
     @FXML
     void go_vehicles(ActionEvent event) {

@@ -45,7 +45,12 @@
                      </font>
                   </Label>
          
-                              <Button fx:id="btnConfirmRental" layoutX="103.0" layoutY="540.0" onAction="#EditClient" prefHeight="45.0" prefWidth="139.0" style="-fx-background-radius: 10; -fx-background-color: #4A61FF;" text="Edit">
+                    <Button fx:id="btnConfirmRental" layoutX="18.0" layoutY="545.0" onAction="#EditClient" prefHeight="45.0" prefWidth="139.0" style="-fx-background-radius: 10; -fx-background-color: #4A61FF;" text="Edit">
+                     <font>
+                        <Font name="Constantia Bold" size="23.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="rm_btn" layoutX="169.0" layoutY="545.0" onAction="#remove_client" prefHeight="45.0" prefWidth="132.0" style="-fx-background-radius: 10; -fx-background-color: #4A61FF;" text="Remove" textFill="RED">
                      <font>
                         <Font name="Constantia Bold" size="23.0" />
                      </font>
@@ -87,7 +92,7 @@
                   <Label layoutX="54.0" layoutY="276.0" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Vehicle Information" textFill="#4a61ff" />
                </children>
             </Pane>
-            <Button fx:id="rm_btn" layoutX="-70.0" layoutY="540.0" onAction="#remove_client" prefHeight="45.0" prefWidth="132.0" style="-fx-background-radius: 10; -fx-background-color: #4A61FF;" text="Remove" textFill="RED">
+            <Button fx:id="return_btn" layoutX="35.0" layoutY="542.0" onAction="#returned_car" prefHeight="45.0" prefWidth="174.0" style="-fx-background-radius: 10; -fx-background-color: #4A61FF;" text="Return Car" textFill="#2fff00">
                <font>
                   <Font name="Constantia Bold" size="23.0" />
                </font>

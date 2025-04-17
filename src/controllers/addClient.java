@@ -147,7 +147,7 @@ public class addClient implements Initializable {
     }
 
     
-    public void updateVehicleStatus(String model, String brand, String newStatus) {
+    public static void updateVehicleStatus(String model, String brand, String newStatus) {
         String query = "UPDATE Vehicles SET availability_status = ? WHERE brand = ? AND model = ?";
     
         try (Connection connection = DatabaseConnection.connect();

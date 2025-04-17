@@ -125,6 +125,7 @@ void handleEditButton(ActionEvent event) {
 
     @FXML
     void remove_car(ActionEvent event) {
+
         System.out.println("remove car button clicked" + " " + reg_nbr.getText());
         String query = "DELETE FROM Vehicles WHERE registration_number = ?";
         try (Connection conn = DatabaseConnection.connect();
@@ -145,4 +146,5 @@ void handleEditButton(ActionEvent event) {
         }
 
     }
+
 }

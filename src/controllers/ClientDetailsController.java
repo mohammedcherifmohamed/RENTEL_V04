@@ -14,6 +14,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
@@ -30,7 +31,8 @@ public class ClientDetailsController implements Initializable  {
     @FXML private ComboBox<String> model;
     @FXML private TextField name;
     @FXML private TextArea txtRentalHistory;
-
+    @FXML
+    private Button return_btn;
     @FXML
     private TextField txtTotalPrice;
 @Override
@@ -83,6 +85,7 @@ public class ClientDetailsController implements Initializable  {
         brand.setValue(client.getBrand());
         model.setValue(client.getModel());
     }
+    
     @FXML
     void remove_client(ActionEvent event) {
         System.out.println(name.getText() + " has been removed from the database.");
@@ -178,5 +181,34 @@ public class ClientDetailsController implements Initializable  {
     void get_thisCar_info(ActionEvent event) {
 
     }
+
+    @FXML
+    public void returned_car(ActionEvent event) {
+        System.out.println("return car button clicked");
+        addClient.updateVehicleStatus(model.getValue(), brand.getValue(), "Available");
+       
+        String query = "UPDATE Rentals SET model = NULL, brand = NULL, total_cost = 0 WHERE model = ? AND brand = ?";
+        try (Connection conn = DatabaseConnection.connect();
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, model.getValue());
+            pstmt.setString(2, brand.getValue());
+
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println("Cleared model, brand, and total_cost for: " + brand.getValue() + " " + model.getValue());
+            } else {
+                System.out.println("No matching record found to update for: " + brand.getValue() + " " + model.getValue());
+            }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+           model.getItems().clear();
+           brand.getItems().clear();
+
+        ((Stage) ((Button) event.getSource()).getScene().getWindow()).close();
+    }
+
 
 }

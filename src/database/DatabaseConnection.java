@@ -109,54 +109,54 @@ public class DatabaseConnection {
     public static void createTables() {
 
         String[] sqlStatements = {
+            "CREATE TABLE IF NOT EXISTS Agents (" +
+            " agent_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            " name TEXT NOT NULL," +
+            " contact_details TEXT NOT NULL," +
+            " email TEXT NOT NULL UNIQUE," +
+            " password TEXT NOT NULL);",
+    
+            "CREATE TABLE IF NOT EXISTS Clients (" +
+            " client_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            " name TEXT NOT NULL," +
+            " contact_details TEXT NOT NULL," +
+            " rental_history TEXT);",
+    
+            "CREATE TABLE IF NOT EXISTS Rentals (" +
+            " rental_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            " client_id INTEGER NOT NULL," +
+            " agent_id INTEGER NOT NULL," +
+            " brand TEXT," +
+            " model TEXT," +
+            " start_date TEXT NOT NULL," +
+            " end_date TEXT NOT NULL," +
+            " total_cost REAL NOT NULL," +
+            " FOREIGN KEY(client_id) REFERENCES Clients(client_id)," +
+            " FOREIGN KEY(agent_id) REFERENCES Agents(agent_id));",
+    
+            "CREATE TABLE IF NOT EXISTS Reports (" +
+            " report_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            " generated_date TEXT NOT NULL," +
+            " report_data TEXT NOT NULL);",
+    
             "CREATE TABLE IF NOT EXISTS Vehicles (" +
             " vehicle_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " registration_number TEXT UNIQUE," +
             " brand TEXT NOT NULL," +
             " model TEXT NOT NULL," +
             " category TEXT NOT NULL," +
-            " imagepath TEXT NOT NULL," +
             " price DOUBLE NOT NULL," +
-            " availability_status TEXT CHECK(availability_status IN ('Available', 'Rented')) NOT NULL);",
-
-            "CREATE TABLE IF NOT EXISTS Clients (" +
-            " client_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " name TEXT NOT NULL," +
-            " contact_details TEXT NOT NULL," +
-            " rental_history TEXT);",
-
-            "CREATE TABLE IF NOT EXISTS Agents (" +
-            " agent_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " name TEXT NOT NULL," +
-            " contact_details TEXT NOT NULL," +
-            " email TEXT UNIQUE NOT NULL," +
-            " password TEXT NOT NULL);",
-
-            "CREATE TABLE IF NOT EXISTS Rentals (" +
-            " rental_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " vehicle_id INTEGER NOT NULL," +
-            " client_id INTEGER NOT NULL," +
-            " agent_id INTEGER NOT NULL," +
-            " start_date TEXT NOT NULL," +
-            " end_date TEXT NOT NULL," +
-            " total_cost REAL NOT NULL," +
-            " FOREIGN KEY (vehicle_id) REFERENCES Vehicles(vehicle_id)," +
-            " FOREIGN KEY (client_id) REFERENCES Clients(client_id)," +
-            " FOREIGN KEY (agent_id) REFERENCES Agents(agent_id));",
-
-            "CREATE TABLE IF NOT EXISTS Payments (" +
-            " payment_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " rental_id INTEGER NOT NULL," +
-            " amount REAL NOT NULL," +
-            " payment_date TEXT NOT NULL," +
-            " FOREIGN KEY (rental_id) REFERENCES Rentals(rental_id));",
-
-            "CREATE TABLE IF NOT EXISTS Reports (" +
-            " report_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " generated_date TEXT NOT NULL," +
-            " report_data TEXT NOT NULL);"
+            " availability_status TEXT NOT NULL CHECK(availability_status IN ('Available', 'Rented'))," +
+            " imagepath TEXT);",
+    
+            "CREATE TABLE IF NOT EXISTS performance_reports (" +
+            " Performance_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            " carbrand TEXT," +
+            " carModel TEXT," +
+            " totalRent INTEGER," +
+            " TotalIncome REAL);"
         };
-
+    
         try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
             for (String sql : sqlStatements) {
                 stmt.execute(sql);
@@ -166,9 +166,10 @@ public class DatabaseConnection {
             System.out.println(e.getMessage());
         }
     }
+    
 
     public static void main(String[] args) {
-        
+        // createTables();
         // String sql = "SELECT * FROM Vehicles";
 
         // try (Connection conn = connect();
@@ -198,7 +199,7 @@ public class DatabaseConnection {
         //     System.out.println("Error adding column: " + e.getMessage());
         // }
 
-        // String deleteData = "DELETE FROM Clients";      
+        // String deleteData = "DELETE FROM Rentals";      
         // try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
         //     stmt.execute(deleteData);
         //     System.out.println("All data deleted from Clients table.");
@@ -243,3 +244,4 @@ public class DatabaseConnection {
         // }
         }
 }
+
