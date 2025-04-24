@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="470.0" prefWidth="760.0" spacing="20.0" style="-fx-background-color: #020725;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ClientController">
+<VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="470.0" prefWidth="760.0" spacing="20.0" style="-fx-background-color: #020725;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ClientController">
    <children>
       <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" onInputMethodTextChanged="#search" prefHeight="80.0" prefWidth="600.0" spacing="30.0" VBox.vgrow="NEVER">
          <children>
@@ -34,17 +34,17 @@
             <Insets top="20.0" />
          </padding>
       </HBox>
-      <TableView fx:id="carTable" prefHeight="600.0" prefWidth="760.0" style="-fx-background-color: #FFFFFF;" VBox.vgrow="ALWAYS">
+      <TableView fx:id="carTable" prefWidth="760.0" styleClass="carTable" VBox.vgrow="ALWAYS">
 
     <!-- Columns -->
     <columns>
-        <TableColumn fx:id="nameColumn" style="-fx-background-color: #4a61ff; -fx-text-fill: white;" text="Name" />
-        <TableColumn fx:id="contactColumn" style="-fx-background-color: #4a61ff; -fx-text-fill: white;" text="contact Details" />
-        <TableColumn fx:id="brandColumn" style="-fx-background-color: #4a61ff; -fx-text-fill: white;" text="Brand" />
-        <TableColumn fx:id="modelColumn" style="-fx-background-color: #4a61ff; -fx-text-fill: white;" text="Model" />
-        <TableColumn fx:id="start_date" style="-fx-background-color: #4a61ff; -fx-text-fill: white;" text="Start Date" />
-        <TableColumn fx:id="end_date" style="-fx-background-color: #4a61ff; -fx-text-fill: white;" text="End Date" />
-        <TableColumn fx:id="total_price" style="-fx-background-color: #4a61ff; -fx-text-fill: white;" text="Total Price" />
+        <TableColumn fx:id="nameColumn"  text="Name" />
+        <TableColumn fx:id="contactColumn"  text="contact Details" />
+        <TableColumn fx:id="brandColumn"  text="Brand" />
+        <TableColumn fx:id="modelColumn"   text="Model" />
+        <TableColumn fx:id="start_date"   text="Start Date" />
+        <TableColumn fx:id="end_date"  text="End Date" />
+        <TableColumn fx:id="total_price"   text="Total Price" />
     </columns>
 
     <!-- Column Resize Policy -->

@@ -24,7 +24,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
-import models.Client;
 
 public class ClientController {
     @FXML

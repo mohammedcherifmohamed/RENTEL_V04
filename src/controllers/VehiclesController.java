@@ -34,11 +34,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class VehiclesController implements Initializable {
-
+    @FXML private javafx.scene.control.ComboBox<String> searchTypeComboBox;
     @FXML private GridPane vehicleGrid;
-
-    @FXML
-    private Button AddVehicle;
+    @FXML    private Button AddVehicle;
 
     @FXML
     private TextField VehicleSearch;
@@ -50,6 +48,8 @@ public class VehiclesController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        searchTypeComboBox.setItems(javafx.collections.FXCollections.observableArrayList("Brand", "Model", "Category"));
+        searchTypeComboBox.getSelectionModel().select("Category"); 
         connection = DatabaseConnection.connect();
         if (connection != null) {
             loadVehicles();
@@ -249,40 +249,51 @@ private void showCarDetails(String model, String brand, String category, double 
 
 
         @FXML
-    void search(KeyEvent  event) {
-        System.out.println(SearchBar.getText());
-        String search_value= SearchBar.getText() ;
-        String query = "SELECT * FROM vehicles"; 
-
-        try (PreparedStatement stmt = connection.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-
-            int column = 0, row = 0;
-            vehicleGrid.getChildren().clear();
-            while (rs.next()) {
-                String name = rs.getString("brand");
-                String category = rs.getString("model");
-                String price = rs.getString("price");
-                String imagePath = rs.getString("imagepath");
-                String regNbr = rs.getString("registration_number");
-                String availability = rs.getString("availability_status"); 
-
-                if(category.toLowerCase().contains(search_value.toLowerCase())){
-                    BorderPane vehicleCard = createVehicleCard(name, category, price,imagePath,regNbr,availability);
-                    vehicleGrid.add(vehicleCard, column, row);
-                    
-                    column++;
-                    if (column == 4) {
-                        column = 0;
-                        row++;
+        void search(KeyEvent event) {
+            String searchValue = SearchBar.getText().toLowerCase();
+            String selectedKey = searchTypeComboBox.getValue();
+            if (selectedKey == null) selectedKey = "Category"; // fallback
+            // String selectedKey = "Category";
+        
+            String query = "SELECT * FROM vehicles";
+        
+            try (PreparedStatement stmt = connection.prepareStatement(query);
+                 ResultSet rs = stmt.executeQuery()) {
+        
+                int column = 0, row = 0;
+                vehicleGrid.getChildren().clear();
+        
+                while (rs.next()) {
+                    String brand = rs.getString("brand");
+                    String model = rs.getString("model");
+                    String category = rs.getString("category");
+                    String price = rs.getString("price");
+                    String imagePath = rs.getString("imagepath");
+                    String regNbr = rs.getString("registration_number");
+                    String availability = rs.getString("availability_status");
+        
+                    boolean matches = switch (selectedKey) {
+                        case "Brand" -> brand.toLowerCase().contains(searchValue);
+                        case "Model" -> model.toLowerCase().contains(searchValue);
+                        case "Category" -> category.toLowerCase().contains(searchValue);
+                        default -> false;
+                    };
+        
+                    if (matches) {
+                        BorderPane vehicleCard = createVehicleCard(brand, model, price, imagePath, regNbr, availability);
+                        vehicleGrid.add(vehicleCard, column, row);
+                        column++;
+                        if (column == 4) {
+                            column = 0;
+                            row++;
+                        }
                     }
                 }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         
-    }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
 
 }

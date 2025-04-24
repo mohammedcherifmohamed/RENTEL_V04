@@ -28,7 +28,7 @@ public class addClient implements Initializable {
     @FXML    private DatePicker StartDate;
     @FXML    private ComboBox<String> brand;
     @FXML    private Button btnConfirmRental;
-    @FXML    private TextArea contact;
+    @FXML    private TextField contact;
     @FXML    private ComboBox<String> model;
     @FXML    private TextField name;
     @FXML    private TextArea txtRentalHistory;

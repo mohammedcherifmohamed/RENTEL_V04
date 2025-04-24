@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="619.0" prefWidth="637.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.addClient">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="619.0" prefWidth="637.0" styleClass="main_rightbox" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.addClient">
    <children>
-      <StackPane layoutX="50.0" layoutY="20.0" prefHeight="619.0" prefWidth="318.0" stylesheets="@application.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="319.0" AnchorPane.topAnchor="0.0">
+      <StackPane layoutX="50.0" layoutY="20.0" prefHeight="619.0" prefWidth="318.0" stylesheets="@style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="319.0" AnchorPane.topAnchor="0.0">
          <children>
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
@@ -24,14 +24,13 @@
                         <Font name="Constantia Bold" size="17.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="name" layoutX="39.0" layoutY="109.0" maxWidth="-Infinity" prefWidth="200.0" />
-   <TextArea fx:id="contact" layoutX="39.0" layoutY="185.0" maxWidth="200" prefHeight="23.0" prefWidth="200" wrapText="true" />
+                  <TextField fx:id="name" layoutX="39.0" layoutY="109.0" maxWidth="-Infinity" prefWidth="200.0" styleClass="buttons2" />
                   <Label layoutX="41.0" layoutY="283.0" text="Total Price:" textFill="#d70000">
                      <font>
                         <Font name="Arial Bold" size="17.0" />
                      </font>
                   </Label>
-   <TextField fx:id="txtTotalPrice" alignment="CENTER" editable="true" layoutX="39.0" layoutY="312.0" maxWidth="200" prefHeight="8.0" prefWidth="200" />      
+   <TextField fx:id="txtTotalPrice" alignment="CENTER" editable="true" layoutX="39.0" layoutY="312.0" maxWidth="200" prefHeight="8.0" prefWidth="200" styleClass="buttons2" />      
                   <!-- Rental History & Contract -->
                   <Label layoutX="48.0" layoutY="403.0" text="Rental History" textFill="#d70000">
                      <font>
@@ -50,6 +49,7 @@
                         <Font name="Constantia Bold" size="13.0" />
                      </font>
                   </Button>
+                  <TextField fx:id="contact" layoutX="39.0" layoutY="193.0" maxWidth="-Infinity" prefWidth="200.0" styleClass="buttons2" />
                </children>
             </Pane>
          </children>

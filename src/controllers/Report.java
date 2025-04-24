@@ -107,9 +107,13 @@ public class Report {
     private void styleCharts(XYChart.Series<String, Number> rentSeries, XYChart.Series<String, Number> incomeSeries) {
         // Disable legends and set axis label styles
         vehicleRentalChart1.setLegendVisible(false);
+        vehicleRentalChart1.setPrefHeight(500);
+        vehicleRentalChart2.setPrefHeight(500);
         vehicleRentalChart2.setLegendVisible(false);
         vehicleCategoryPieChart.setLegendVisible(false);
         vehicleCategoryPieChart.setLabelsVisible(false);
+        vehicleCategoryPieChart.setTitle("Most Category Rented ");
+
 
         Platform.runLater(() -> {
             rentSeries.getData().forEach(data -> {

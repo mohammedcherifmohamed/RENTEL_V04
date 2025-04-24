@@ -27,7 +27,7 @@ public class ClientDetailsController implements Initializable  {
     @FXML private DatePicker StartDate;
     @FXML private ComboBox<String> brand;
     @FXML private Button btnConfirmRental;
-    @FXML private TextArea contact;
+    @FXML private TextField contact;
     @FXML private ComboBox<String> model;
     @FXML private TextField name;
     @FXML private TextArea txtRentalHistory;
@@ -187,7 +187,7 @@ public class ClientDetailsController implements Initializable  {
         System.out.println("return car button clicked");
         addClient.updateVehicleStatus(model.getValue(), brand.getValue(), "Available");
        
-        String query = "UPDATE Rentals SET model = NULL, brand = NULL, total_cost = 0 WHERE model = ? AND brand = ?";
+        String query = "UPDATE Rentals SET status = returned WHERE model = ? AND brand = ?";
         try (Connection conn = DatabaseConnection.connect();
             PreparedStatement pstmt = conn.prepareStatement(query)) {
 

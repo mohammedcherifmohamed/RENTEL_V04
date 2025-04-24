@@ -33,4 +33,115 @@
     -fx-border-radius: 10px;
 
 
+
+
+}
+
+.buttons2{
+    -fx-text-fill:white;
+    -fx-border-width:1.5px ;
+    -fx-border-style:solid ;
+    -fx-border-color: rgb(255, 255, 255);
+    -fx-background-color:rgba(255, 255, 255, 0);
+    -fx-padding:7 25;
+    -fx-border-radius: 10px;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+
+}
+
+
+/* ComboBox base */
+.combo-box {
+    -fx-background-color: #2C2F4A;
+    -fx-background-radius: 10;
+    -fx-border-color: #4a61ff;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-padding: 5 10 5 10;
+    -fx-text-fill: white;
+}
+
+/* Text inside ComboBox */
+.combo-box .text {
+    -fx-fill: white;
+    -fx-font-size: 14px;
+}
+
+/* Arrow button */
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 5;
+}
+
+.combo-box .arrow-button .arrow {
+    -fx-background-color: #4a61ff;
+}
+
+/* ComboBox popup */
+.combo-box-popup .list-view {
+    -fx-background-color: #2C2F4A;
+    -fx-control-inner-background: #2C2F4A;
+    -fx-border-color: #4a61ff;
+    -fx-border-radius: 10;
+    -fx-padding: 5;
+}
+
+.combo-box-popup .list-cell {
+    -fx-text-fill: white;
+    -fx-background-color: transparent;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #4a61ff;
+    -fx-text-fill: white;
+}
+
+
+.table-column-header {
+    -fx-font-family: "Segoe UI";
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: rgb(248, 38, 38);
+}
+
+
+
+#nameColumn ,#contactColumn,#brandColumn,#modelColumn ,#start_date ,#end_date ,#total_price{
+    -fx-font-family: "Segoe UI"; 
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;  
+    -fx-alignment: CENTER;}
+.table-view {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-table-cell-border-color: transparent;
+    -fx-padding: 0;
+}
+.table-row-cell {
+    -fx-background-color: transparent;
+}
+.table-row-cell:odd {
+    -fx-background-color: rgb(49, 55, 141);
+}
+.table-row-cell:even {
+    -fx-background-color: rgb(31, 36, 116);
+}
+.table-row-cell:selected {
+    -fx-background-color: #4a61ff; 
+}
+
+.searchbar{
+    -fx-background-radius: 15; 
+    -fx-background-color: #1E1E2F;
+     -fx-text-fill: white;
+     -fx-font-family: "Segoe UI";
+     -fx-font-weight: bold;
+     -fx-height: 40px;
+        -fx-font-size: 16px;
+        -fx-padding: 10;
+
+
 }
