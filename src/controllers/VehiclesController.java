@@ -265,8 +265,10 @@ private void showCarDetails(String model, String brand, String category, double 
                 String price = rs.getString("price");
                 String imagePath = rs.getString("imagepath");
                 String regNbr = rs.getString("registration_number");
+                String availability = rs.getString("availability_status"); 
+
                 if(category.toLowerCase().contains(search_value.toLowerCase())){
-                    BorderPane vehicleCard = createVehicleCard(name, category, price,imagePath,regNbr,"Available");
+                    BorderPane vehicleCard = createVehicleCard(name, category, price,imagePath,regNbr,availability);
                     vehicleGrid.add(vehicleCard, column, row);
                     
                     column++;

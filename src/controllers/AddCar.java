@@ -16,31 +16,15 @@ import javafx.scene.control.Label;
 
 
 public class AddCar {
-    @FXML
-    private TextField brand;
-
-    @FXML
-    private Button btnAdd;
-
-    @FXML
-    private TextField category;
-
-    @FXML
-    private Label dragLabel;
-
-    @FXML
-    private TextField model;
-
-    @FXML
-    private TextField price;
-
-    @FXML
-    private TextField reg_nbr;
-    @FXML
-    private Button img_btn;
-    @FXML
-    private ImageView choosen_image;
-
+    @FXML private TextField brand;
+    @FXML private Button btnAdd;
+    @FXML private TextField category;
+    @FXML private Label dragLabel;
+    @FXML private TextField model;
+    @FXML private TextField price;
+    @FXML private TextField reg_nbr;
+    @FXML private Button img_btn;
+    @FXML private ImageView choosen_image;
     private Stage stage;
 
     private Vehicle newVehicle;
@@ -77,7 +61,7 @@ public class AddCar {
         newVehicle = new Vehicle(
             brand.getText(),
             model.getText(),
-            category.getText(),
+            category.getText().toLowerCase(),
             reg_nbr.getText(),
             selectedImagePath,
             Double.parseDouble(price.getText())

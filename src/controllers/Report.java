@@ -1,75 +1,144 @@
 package controllers;
 
+import database.DatabaseConnection;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.chart.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.geometry.Side;
+import javafx.scene.Node;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.paint.Color;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class Report implements Initializable {
+public class Report {
 
     @FXML
-    private HBox chartContainer;
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // First chart
-        CategoryAxis xAxis1 = new CategoryAxis();
-        NumberAxis yAxis1 = new NumberAxis();
-        xAxis1.setLabel("Vehicle");
-        yAxis1.setLabel("Income");
-        BarChart<String, Number> chart1 = new BarChart<>(xAxis1, yAxis1);
-        chart1.setLegendVisible(false);
-        chart1.setTitle("Income per Vehicle");
-        chart1.setCategoryGap(10);
-        chart1.setBarGap(3);
-        XYChart.Series<String, Number> series1 = new XYChart.Series<>();
-        series1.getData().add(new XYChart.Data<>("Car AC", 1000));
-        series1.getData().add(new XYChart.Data<>("Car AB", 1000));
-        series1.getData().add(new XYChart.Data<>("Car A", 1000));
-        series1.getData().add(new XYChart.Data<>("Car B", 1500));
-        series1.getData().add(new XYChart.Data<>("Car C", 800));
-        chart1.getData().add(series1);
-    
-        // Set the chart's width and height to be 50% of the container's size
-        chart1.setPrefHeight(Region.USE_COMPUTED_SIZE); // This allows the chart to resize based on container height
-        chart1.setPrefWidth(Region.USE_COMPUTED_SIZE);  // This allows the chart to resize based on container width
-    
-        // Second chart
-        CategoryAxis xAxis2 = new CategoryAxis();
-        NumberAxis yAxis2 = new NumberAxis();
-        xAxis2.setLabel("Vehicle");
-        yAxis2.setLabel("Number of Rents");
-        yAxis2.setSide(Side.LEFT);
-        BarChart<String, Number> chart2 = new BarChart<>(xAxis2, yAxis2);
-        chart2.setLegendVisible(false);
-        chart2.setTitle("Number of Rentals");
-        chart2.setCategoryGap(10);
-        chart2.setBarGap(3);
-        chart2.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
-        XYChart.Series<String, Number> series2 = new XYChart.Series<>();
-        series2.getData().add(new XYChart.Data<>("Car A", 5));
-        series2.getData().add(new XYChart.Data<>("Car B", 8));
-        series2.getData().add(new XYChart.Data<>("Car C", 3));
-        chart2.getData().add(series2);
-    
-        // Set the chart's width and height to be 50% of the container's size
-        chart2.setPrefHeight(Region.USE_COMPUTED_SIZE); // Allow resizing based on parent container
-        chart2.setPrefWidth(Region.USE_COMPUTED_SIZE);  // Allow resizing based on parent container
-    
-        // Add the charts to the container
-        chartContainer.getChildren().addAll(chart1, chart2);
-    
-        // Make sure the charts fill the container's size
-        chartContainer.setStyle("-fx-border-color: black;"); // For debugging the layout
-    }
-    
-    
+    private NumberAxis monthlyRentAxis;
 
-    
-    
+    @FXML
+    private CategoryAxis vehicleModelAxis;
+
+    @FXML
+    private BarChart<String, Number> vehicleRentalChart1;
+
+    @FXML
+    private BarChart<String, Number> vehicleRentalChart2;
+
+    @FXML
+    private NumberAxis quantityAxis;
+
+    @FXML
+    private CategoryAxis vehicleModelAxis2;
+
+    @FXML
+    private PieChart vehicleCategoryPieChart; // Optional – not used in this version
+
+    public void initialize() {
+        updateCharts();
+    }
+
+    private void updateCharts() {
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        String pieSql = "SELECT category, SUM(totalRent) as totalRents FROM performance_reports GROUP BY category";
+
+        try (var conn = DatabaseConnection.connect();
+            var stmt = conn.prepareStatement(pieSql);
+            var rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String category = rs.getString("category");
+                int totalRents = rs.getInt("totalRents");
+                pieChartData.add(new PieChart.Data(category, totalRents));
+            }
+
+            vehicleCategoryPieChart.setData(pieChartData);
+            vehicleCategoryPieChart.setLabelsVisible(true);
+            vehicleCategoryPieChart.setLegendVisible(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String query = "SELECT carbrand, carModel, totalRent, TotalIncome FROM performance_reports";
+
+        XYChart.Series<String, Number> rentSeries = new XYChart.Series<>();
+        rentSeries.setName("Total Rent");
+
+        XYChart.Series<String, Number> incomeSeries = new XYChart.Series<>();
+        incomeSeries.setName("Total Income");
+
+        try (var conn = DatabaseConnection.connect();
+             var stmt = conn.prepareStatement(query);
+             var rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String brand = rs.getString("carbrand");
+                String model = rs.getString("carModel");
+                int totalRent = rs.getInt("totalRent");
+                double totalIncome = rs.getDouble("TotalIncome");
+
+                String label = brand + " " + model;
+
+                rentSeries.getData().add(new XYChart.Data<>(label, totalRent));
+                incomeSeries.getData().add(new XYChart.Data<>(label, totalIncome));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        vehicleRentalChart1.getData().setAll(rentSeries);
+        vehicleRentalChart2.getData().setAll(incomeSeries);
+
+        styleCharts(rentSeries, incomeSeries);
+        for (PieChart.Data data : pieChartData) {
+            String text = data.getName() + ": " + (int) data.getPieValue();
+            javafx.scene.control.Tooltip tooltip = new javafx.scene.control.Tooltip(text);
+            javafx.scene.control.Tooltip.install(data.getNode(), tooltip);
+        }
+        vehicleCategoryPieChart.setData(pieChartData);
+        
+    }
+
+    private void styleCharts(XYChart.Series<String, Number> rentSeries, XYChart.Series<String, Number> incomeSeries) {
+        // Disable legends and set axis label styles
+        vehicleRentalChart1.setLegendVisible(false);
+        vehicleRentalChart2.setLegendVisible(false);
+        vehicleCategoryPieChart.setLegendVisible(false);
+        vehicleCategoryPieChart.setLabelsVisible(false);
+
+        Platform.runLater(() -> {
+            rentSeries.getData().forEach(data -> {
+                if (data.getNode() != null) {
+                    data.getNode().setStyle("-fx-bar-fill: #FF4C4C;"); // Red for Rent
+                }
+            });
+
+            incomeSeries.getData().forEach(data -> {
+                if (data.getNode() != null) {
+                    data.getNode().setStyle("-fx-bar-fill: #4A90E2;"); // Blue for Income
+                }
+            });
+
+            // Background styling
+            Node background1 = vehicleRentalChart1.lookup(".chart-plot-background");
+            if (background1 != null) background1.setStyle("-fx-background-color: #001FBB;");
+
+            Node background2 = vehicleRentalChart2.lookup(".chart-plot-background");
+            if (background2 != null) background2.setStyle("-fx-background-color: #001FBB;");
+
+            // Axis label colors
+            monthlyRentAxis.setLabel("Total Rent");
+            monthlyRentAxis.setTickLabelFill(Color.WHITE);
+            quantityAxis.setLabel("Total Income");
+            quantityAxis.setTickLabelFill(Color.WHITE);
+
+            vehicleModelAxis.setTickLabelFill(Color.WHITE);
+            vehicleModelAxis2.setTickLabelFill(Color.WHITE);
+        });
+    }
 }

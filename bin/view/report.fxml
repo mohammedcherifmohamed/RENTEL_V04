@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
-<HBox fx:id="chartContainer" xmlns:fx="http://javafx.com/fxml" 
-      fx:controller="controllers.Report" spacing="0" prefHeight="400.0" prefWidth="900.0">
-</HBox>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="10" style="-fx-background-color: #020725; -fx-padding: 10;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Report">
+
+   <children>
+      <!-- Title -->
+      <Label style="-fx-font-size: 20; -fx-text-fill: #4a61ff; -fx-font-weight: bold;" text="Vehicle Models and Monthly Rent" />
+
+      <!-- Responsive HBox for both charts -->
+      <HBox spacing="0" style="-fx-padding: 0;" VBox.vgrow="ALWAYS">
+         <!-- First Chart -->
+         <BarChart fx:id="vehicleRentalChart1" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+            <xAxis>
+               <CategoryAxis fx:id="vehicleModelAxis" />
+            </xAxis>
+            <yAxis>
+               <NumberAxis fx:id="monthlyRentAxis" label="Monthly Rent (USD)" />
+            </yAxis>
+         </BarChart>
+
+         <!-- Second Chart -->
+         <BarChart fx:id="vehicleRentalChart2" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+            <xAxis>
+               <CategoryAxis fx:id="vehicleModelAxis2" />
+            </xAxis>
+            <yAxis>
+               <NumberAxis fx:id="quantityAxis" label="Quantity Rented" side="RIGHT" />
+            </yAxis>
+         </BarChart>
+      </HBox>
+
+      <!-- Pie Chart for Vehicle Categories -->
+      <PieChart fx:id="vehicleCategoryPieChart" VBox.vgrow="NEVER" />
+   </children>
+</VBox>

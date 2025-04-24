@@ -37,7 +37,7 @@ public class addClient implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("from initialize");
-        String sql = "SELECT DISTINCT brand FROM Vehicles";
+        String sql = "SELECT DISTINCT brand FROM Vehicles WHERE availability_status = 'Available'"; 
         try (Connection conn = DatabaseConnection.connect();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
@@ -54,14 +54,13 @@ public class addClient implements Initializable {
     void filter_modeles(ActionEvent event) {
         System.out.println(brand.getSelectionModel().getSelectedItem());
         String selected_brand = brand.getSelectionModel().getSelectedItem();
-        String sql = "SELECT model FROM Vehicles WHERE brand = ?";
+        String sql = "SELECT model FROM Vehicles WHERE brand = ?  AND availability_status = 'Available'";
 
         try (Connection conn = DatabaseConnection.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, selected_brand);
             ResultSet rs = stmt.executeQuery();
-
             model.getItems().clear(); 
 
             while (rs.next()) {
@@ -85,7 +84,13 @@ public class addClient implements Initializable {
 
             String checkSql = "SELECT client_id FROM Clients WHERE name = ? AND contact_details = ?";
             String insertClientSql = "INSERT INTO Clients (name, contact_details,rental_history) VALUES (?, ?,?)";
-            String insertRentalSql = "INSERT INTO Rentals ( client_id, agent_id, start_date, end_date, total_cost,brand,model) VALUES ( ?, ?, ?, ?, ?,?,?)";
+            String insertRentalSql = "INSERT INTO Rentals ( client_id, start_date, end_date, total_cost,brand,model) VALUES ( ?,  ?, ?, ?,?,?)";
+            String insertPerformanceSql = "INSERT INTO performance_reports ( carbrand, carModel, totalRent, TotalIncome) VALUES ( ?, ?, ?, ?)";
+
+            String category = getCategoryForVehicle(brand.getValue(), model.getValue());
+            double totalPrice = Double.parseDouble(txtTotalPrice.getText());
+            updatePerformanceReports(brand.getValue(), model.getValue(), totalPrice, category);
+
             updateVehicleStatus( model.getValue() ,  brand.getValue(),  "Rented");
             try (Connection conn = DatabaseConnection.connect();
                  PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
@@ -97,11 +102,9 @@ public class addClient implements Initializable {
                 int clientId;
 
                 if (rs.next()) {
-                    // Client exists
                     clientId = rs.getInt("client_id");
                     System.out.println("Client already exists.");
                 } else {
-                    // Client does not exist, insert them
                     try (PreparedStatement insertClientStmt = conn.prepareStatement(insertClientSql, Statement.RETURN_GENERATED_KEYS)) {
                         insertClientStmt.setString(1, name.getText());
                         insertClientStmt.setString(2, contact.getText());
@@ -121,15 +124,12 @@ public class addClient implements Initializable {
                 // Insert into Rentals
                 try (PreparedStatement insertRentalStmt = conn.prepareStatement(insertRentalSql)) {
                     insertRentalStmt.setInt(1, clientId);
-                    insertRentalStmt.setInt(2, 99); // You should get this from your session or login info
-                    insertRentalStmt.setString(3, StartDate.getValue().toString());
-                    insertRentalStmt.setString(4, EndDate.getValue().toString());
-                    insertRentalStmt.setDouble(5, daysBetween * Double.parseDouble(txtTotalPrice.getText()) ); 
-                    insertRentalStmt.setString(6, brand.getValue());
-                    insertRentalStmt.setString(7, model.getValue());
+                    insertRentalStmt.setString(2, StartDate.getValue().toString());
+                    insertRentalStmt.setString(3, EndDate.getValue().toString());
+                    insertRentalStmt.setDouble(4, daysBetween * Double.parseDouble(txtTotalPrice.getText()) ); 
+                    insertRentalStmt.setString(5, brand.getValue());
+                    insertRentalStmt.setString(6, model.getValue());
                     insertRentalStmt.executeUpdate();
-
-                    System.out.println("Rental confirmed.");
 
                     if (clientController != null) {
                         clientController.loadSampleData();
@@ -146,6 +146,55 @@ public class addClient implements Initializable {
         }
     }
 
+    private String getCategoryForVehicle(String brand, String model) {
+        String sql = "SELECT category FROM Vehicles WHERE brand = ? AND model = ?";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, brand);
+            stmt.setString(2, model);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) return rs.getString("category");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public static void updatePerformanceReports(String brand, String model, double totalIncome , String category) {
+        String selectQuery = "SELECT * FROM performance_reports WHERE carbrand = ? AND carModel = ?";
+        String updateQuery = "UPDATE performance_reports SET totalRent = totalRent + 1, TotalIncome = TotalIncome + ? WHERE carbrand = ? AND carModel = ?";
+        String insertQuery = "INSERT INTO performance_reports (carbrand, carModel, totalRent, TotalIncome,category) VALUES (?, ?, ?, ?,?)";
+    
+        try (Connection connection = DatabaseConnection.connect();
+             PreparedStatement selectStmt = connection.prepareStatement(selectQuery)) {
+    
+            selectStmt.setString(1, brand);
+            selectStmt.setString(2, model);
+            ResultSet rs = selectStmt.executeQuery();
+    
+            if (rs.next()) {
+                try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+                    updateStmt.setDouble(1, totalIncome);
+                    updateStmt.setString(2, brand);
+                    updateStmt.setString(3, model);
+                    updateStmt.executeUpdate();
+                }
+            } else {
+                try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
+                    insertStmt.setString(1, brand);
+                    insertStmt.setString(2, model);
+                    insertStmt.setInt(3, 1);
+                    insertStmt.setDouble(4, totalIncome);
+                    insertStmt.setString(5, category);
+                    insertStmt.executeUpdate();
+                }
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     
     public static void updateVehicleStatus(String model, String brand, String newStatus) {
         String query = "UPDATE Vehicles SET availability_status = ? WHERE brand = ? AND model = ?";
@@ -162,9 +211,6 @@ public class addClient implements Initializable {
         }
     }
     
-    
-    
-
     @FXML
     void get_thisCar_info(ActionEvent event) {
         String selected_brand = brand.getSelectionModel().getSelectedItem();
@@ -198,4 +244,5 @@ public class addClient implements Initializable {
             e.printStackTrace();
         }
     }
+
 }

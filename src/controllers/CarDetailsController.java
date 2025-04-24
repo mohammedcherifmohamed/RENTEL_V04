@@ -22,32 +22,16 @@ import javafx.stage.FileChooser;
 import javax.naming.spi.DirStateFactory;
 
 public class CarDetailsController {
-    @FXML
-    private Button remove_carBtn;
+    @FXML private Button remove_carBtn;
+    @FXML private TextField brand;
+    @FXML private Button btnAdd;
+    @FXML private TextField category;
+    @FXML private ImageView choosen_image;
+    @FXML private Button img_btn;
+    @FXML private TextField model;
+    @FXML private TextField price;
+    @FXML private TextField reg_nbr;
 
-    @FXML
-    private TextField brand;
-
-    @FXML
-    private Button btnAdd;
-
-    @FXML
-    private TextField category;
-
-    @FXML
-    private ImageView choosen_image;
-
-    @FXML
-    private Button img_btn;
-
-    @FXML
-    private TextField model;
-
-    @FXML
-    private TextField price;
-
-    @FXML
-    private TextField reg_nbr;
     public String getImagePathFromImageView() {
         Image image = choosen_image.getImage();
         if (image != null && image.getUrl() != null) {
@@ -75,7 +59,6 @@ void handleEditButton(ActionEvent event) {
         String imagePath = getImagePathFromImageView();
         
         pstmt.setString(5, imagePath);
-        System.out.println("debug line :" + imagePath);
         pstmt.setDouble(6, Double.parseDouble(price.getText()));
         pstmt.setString(7, car_reg);
 
@@ -136,7 +119,6 @@ void handleEditButton(ActionEvent event) {
 
             if (vehiclesController != null) {
                 vehiclesController.loadVehicles();
-                System.out.println("VehiclesController is not null");
             }
 
             ((Stage) ((Button) event.getSource()).getScene().getWindow()).close();

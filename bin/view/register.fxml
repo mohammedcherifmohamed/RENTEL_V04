@@ -23,7 +23,7 @@
                   <VBox fx:id="rightbox" alignment="CENTER" maxWidth="700.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="714.0" prefWidth="503.0" styleClass="main_rightbox" HBox.hgrow="ALWAYS">
                      <children>
                         <HBox prefHeight="78.0" prefWidth="343.0" />
-                        <TextField fx:id="name" accessibleRole="PARENT" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="283.0" promptText="Enter your Email" styleClass="inputs">
+                        <TextField fx:id="name" accessibleRole="PARENT" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="283.0" promptText="User Name" styleClass="inputs">
                            <font>
                               <Font name="Arial Bold" size="15.0" />
                            </font>

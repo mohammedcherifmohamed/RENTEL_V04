@@ -16,23 +16,12 @@ import javafx.scene.layout.VBox;
 
 public class dashboardController implements Initializable {
     Connection connection ;
-    @FXML
-    private BorderPane bp;
-
-    @FXML
-    private VBox display_content;
-
-    @FXML
-    private Label lblTotalClients;
-
-    @FXML
-    private Label lblTotalIncome;
-
-    @FXML
-    private Label lblTotalRentals;
-
-    @FXML
-    private Label lblTotalVehicles;
+    @FXML private BorderPane bp;
+    @FXML private VBox display_content;
+    @FXML private Label lblTotalClients;
+    @FXML private Label lblTotalIncome;
+    @FXML private Label lblTotalRentals;
+    @FXML private Label lblTotalVehicles;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -56,14 +45,13 @@ public class dashboardController implements Initializable {
              ResultSet rs = pstmt.executeQuery()) {
     
             if (rs.next()) {
-                int totalVehicles = rs.getInt(1);  // Get first column value
+                int totalVehicles = rs.getInt(1);  
                 lblTotalVehicles.setText(String.valueOf(totalVehicles));
             }
         } catch (SQLException e) {
             System.out.println("Error fetching total vehicles: " + e.getMessage());
         }
     
-        // Fetch total rentals
         String sqlRentals = "SELECT COUNT(*) FROM Rentals";
         try (PreparedStatement pstmt = connection.prepareStatement(sqlRentals);
              ResultSet rs = pstmt.executeQuery()) {
@@ -76,7 +64,6 @@ public class dashboardController implements Initializable {
             System.out.println("Error fetching total rentals: " + e.getMessage());
         }
     
-        // // Fetch total clients
         String sqlClients = "SELECT COUNT(*) FROM Clients";
         try (PreparedStatement pstmt = connection.prepareStatement(sqlClients);
              ResultSet rs = pstmt.executeQuery()) {
@@ -89,14 +76,14 @@ public class dashboardController implements Initializable {
             System.out.println("Error fetching total clients: " + e.getMessage());
         }
     
-    String sqlIncome = "SELECT SUM(total_cost) FROM Rentals";
-    try (Connection conn = DatabaseConnection.connect(); // Assuming you have a DatabaseConnection utility
+    String sqlIncome = "SELECT SUM(TotalIncome) FROM performance_reports";
+    try (Connection conn = DatabaseConnection.connect(); 
         PreparedStatement pstmt = conn.prepareStatement(sqlIncome);
         ResultSet rs = pstmt.executeQuery()) {
 
         if (rs.next()) {
-            double totalIncome = rs.getDouble(1); // Get the sum from the result set
-            lblTotalIncome.setText(String.format("%.2f", totalIncome));  // Display total income, format as currency
+            double totalIncome = rs.getDouble(1);
+            lblTotalIncome.setText(String.format("%.2f", totalIncome));  
         }
     } catch (SQLException e) {
         System.out.println("Error fetching total income: " + e.getMessage());
@@ -104,5 +91,4 @@ public class dashboardController implements Initializable {
 
     }
     
-
 }

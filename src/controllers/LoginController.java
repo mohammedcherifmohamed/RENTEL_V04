@@ -15,33 +15,17 @@ import javafx.scene.Node;
 
 public class LoginController {
 
-
-    @FXML
-    private Label err_msg;
-
-    @FXML
-    private ImageView imageView;
-
-    @FXML
-    private ImageView imageView1;
-
-    @FXML
-    private Button login_btn;
-
-    @FXML
-    private VBox main_rightbox;
-
-    @FXML
-    private TextField name;
-
-    @FXML
-    private TextField password;
-
-    @FXML
-    private Button register;
+    @FXML private Label err_msg;
+    @FXML private ImageView imageView;
+    @FXML private ImageView imageView1;
+    @FXML private Button login_btn;
+    @FXML private VBox main_rightbox;
+    @FXML private TextField name;
+    @FXML private TextField password;
+    @FXML private Button register;
+    
     @FXML
     public void login(ActionEvent event) {
-        System.out.println("Hello "+" "+name.getText());
         String userName = name.getText();
         String pass = password.getText();
 
@@ -51,24 +35,18 @@ public class LoginController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"));
                 Parent root = loader.load();
         
-               
-                // Get the current stage
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-                // Get the controller of the next scene (MainViewController)
                 MainController controller = loader.getController();
 
-                // Pass the userName to the controller
                 controller.setUserName(userName);
         
-                // Set the new scene
                 stage.setScene(new Scene(root));
                 stage.setTitle("Dashboard");
                 stage.show();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            // Load the next scene or dashboard
         } else {
             System.out.println("Invalid credentials!");
             err_msg.setText("Invalid email or password.");
@@ -82,10 +60,8 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/register.fxml"));
             Parent root = loader.load();
     
-            // Get the current stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     
-            // Set the new scene
             stage.setScene(new Scene(root));
             stage.setTitle("Register");
             stage.show();

@@ -206,7 +206,10 @@ public class ClientDetailsController implements Initializable  {
             }
            model.getItems().clear();
            brand.getItems().clear();
-
+           
+        if (clientController != null) {
+            clientController.loadSampleData();
+          }
         ((Stage) ((Button) event.getSource()).getScene().getWindow()).close();
     }
 

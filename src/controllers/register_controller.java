@@ -16,45 +16,23 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class register_controller {
-  @FXML
-    private PasswordField confirmPaswword;
+    @FXML private PasswordField confirmPaswword;
+    @FXML private TextField email;
+    @FXML private Label err_msg;
+    @FXML private ImageView imageView;
+    @FXML private Button login;
+    @FXML private VBox main_rightbox;
+    @FXML private TextField name;
+    @FXML private PasswordField paswword;
+    @FXML private Button register;
+    @FXML private VBox rightbox;
+    @FXML
 
-    @FXML
-    private TextField email;
-
-    @FXML
-    private Label err_msg;
-
-    @FXML
-    private ImageView imageView;
-
-    @FXML
-    private Button login;
-
-    @FXML
-    private VBox main_rightbox;
-
-    @FXML
-    private TextField name;
-
-    @FXML
-    private PasswordField paswword;
-
-    @FXML
-    private Button register;
-
-    @FXML
-    private VBox rightbox;
-    @FXML
     void go_login(ActionEvent event) {
              try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/login.fxml"));
             Parent root = loader.load();
-    
-            // Get the current stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-    
-            // Set the new scene
             stage.setScene(new Scene(root));
             stage.setTitle("Login");
             stage.show();
@@ -72,11 +50,8 @@ public class register_controller {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/login.fxml"));
                 Parent root = loader.load();
-                
-                // Get the current stage
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 
-                // Set the new scene
                 stage.setScene(new Scene(root));
                 stage.setTitle("Login");
                 stage.show();
@@ -87,7 +62,7 @@ public class register_controller {
          else{
             if(DatabaseConnection.isExists( name.getText(),  email.getText()))
                 err_msg.setText("User Already Exists");
-            if(paswword.getText().equals(confirmPaswword.getText()) )
+            if(!paswword.getText().equals(confirmPaswword.getText()) )
                 err_msg.setText("Password Does Not Match");
 
         }

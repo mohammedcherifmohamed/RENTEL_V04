@@ -125,19 +125,12 @@ public class DatabaseConnection {
             "CREATE TABLE IF NOT EXISTS Rentals (" +
             " rental_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " client_id INTEGER NOT NULL," +
-            " agent_id INTEGER NOT NULL," +
             " brand TEXT," +
             " model TEXT," +
             " start_date TEXT NOT NULL," +
             " end_date TEXT NOT NULL," +
             " total_cost REAL NOT NULL," +
-            " FOREIGN KEY(client_id) REFERENCES Clients(client_id)," +
-            " FOREIGN KEY(agent_id) REFERENCES Agents(agent_id));",
-    
-            "CREATE TABLE IF NOT EXISTS Reports (" +
-            " report_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " generated_date TEXT NOT NULL," +
-            " report_data TEXT NOT NULL);",
+            " FOREIGN KEY(client_id) REFERENCES Clients(client_id))",
     
             "CREATE TABLE IF NOT EXISTS Vehicles (" +
             " vehicle_id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -191,7 +184,8 @@ public class DatabaseConnection {
         // } catch (SQLException e) {
         //     System.out.println("Error retrieving data: " + e.getMessage());
         // }
-        // String addcolumn = "ALTER DELETE COLUMN from Rentels vehicle_id";
+        // String addcolumn = "UPDATE performance_reports SET category = 'bike' WHERE carModel = 'NINJA-200'";
+
         // try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
         //     stmt.execute(addcolumn);
         //     System.out.println("Column 'imagepath' added successfully to Vehicles table.");

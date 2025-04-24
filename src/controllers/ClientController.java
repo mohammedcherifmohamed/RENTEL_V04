@@ -145,58 +145,57 @@ public class ClientController {
     
     @FXML
     void search(KeyEvent event) {
-    String searchValue = searchBar.getText();
-    System.out.println(searchValue);
+        String searchValue = searchBar.getText();
 
-    String sql = "SELECT c.name, c.contact_details, c.rental_history, r.start_date, r.end_date, r.total_cost, r.model, r.brand " +
-                 "FROM Clients c " +
-                 "JOIN Rentals r ON c.client_id = r.client_id";
+        String sql = "SELECT c.name, c.contact_details, c.rental_history, r.start_date, r.end_date, r.total_cost, r.model, r.brand " +
+                    "FROM Clients c " +
+                    "JOIN Rentals r ON c.client_id = r.client_id";
 
-    try (Connection conn = DatabaseConnection.connect();
-         PreparedStatement stmt = conn.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = DatabaseConnection.connect();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
 
-        clientList.clear();
+            clientList.clear();
 
-        while (rs.next()) {
-            String name = rs.getString("name");
-            String contact = rs.getString("contact_details");
-            String brand = rs.getString("brand");
-            String model = rs.getString("model");
-            String start = rs.getString("start_date");
-            String end = rs.getString("end_date");
-            String totalCost = rs.getString("total_cost") ;
-            String rental_history = rs.getString("rental_history");
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String contact = rs.getString("contact_details");
+                String brand = rs.getString("brand");
+                String model = rs.getString("model");
+                String start = rs.getString("start_date");
+                String end = rs.getString("end_date");
+                String totalCost = rs.getString("total_cost") ;
+                String rental_history = rs.getString("rental_history");
 
-            if (contact.toLowerCase().contains(searchValue.toLowerCase())) {
-                clientList.add(new Client(name, contact, brand, model, start, end, totalCost, rental_history));
+                if (contact.toLowerCase().contains(searchValue.toLowerCase())) {
+                    clientList.add(new Client(name, contact, brand, model, start, end, totalCost, rental_history));
+                }
             }
-        }
-        carTable.refresh();
+            carTable.refresh();
 
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }   
 
     @FXML
-void AddClientbtn(ActionEvent event) {
-    try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/addClient.fxml"));
-        Parent root = loader.load();
+    void AddClientbtn(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/addClient.fxml"));
+            Parent root = loader.load();
 
-        addClient addClientController = loader.getController();
-        addClientController.setClientController(this); // Pass reference
+            addClient addClientController = loader.getController();
+            addClientController.setClientController(this); 
 
-        Stage stage = new Stage();
-        stage.setTitle("Add Client");
-        stage.setScene(new Scene(root));
+            Stage stage = new Stage();
+            stage.setTitle("Add Client");
+            stage.setScene(new Scene(root));
 
-        stage.showAndWait(); 
-        loadSampleData();
-    } catch (IOException e) {
-        e.printStackTrace();
+            stage.showAndWait(); 
+            loadSampleData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-}
 
 }

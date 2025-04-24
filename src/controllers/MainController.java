@@ -59,6 +59,7 @@ public class MainController implements Initializable {
         checkNotifications();
     }
     void checkNotifications() {
+        int count = 0;
         VBox popContent = new VBox(10);
         popContent.setStyle("-fx-background-color: white; -fx-padding: 15;");
         
@@ -71,17 +72,19 @@ public class MainController implements Initializable {
                 String msg = "🔔 " + reminder.getClientName() + 
                             " should return " + reminder.getVehicleBrand() +
                             " " + reminder.getVehicleModel() +
-                            " by " + reminder.getEndDate();
+                            " TOMOROW " ;
                 popContent.getChildren().add(new Label(msg));
+                count ++ ;
             }
         }
+        notification_label.setText(String.valueOf(count)); ;
 
         popOver = new PopOver(popContent);
         popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
         popOver.setDetachable(false);
         popOver.setAutoHide(true);
     }
-public List<RentalReminder> getRentalReminders() {
+    public List<RentalReminder> getRentalReminders() {
     List<RentalReminder> reminders = new ArrayList<>();
     String sql = """
        SELECT Rentals.rental_id, Clients.name, Rentals.brand, Rentals.model, Rentals.end_date
